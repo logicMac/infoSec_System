@@ -1,5 +1,6 @@
 # Ignore backend node modules
 backend/node_modules/
+backend/tsconfig.json/
 
 # Ignore frontend node modules if exists
 client/node_modules/

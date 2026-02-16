@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import db from './db.ts';
 
 const app = express();
 const PORT = 3000;
@@ -10,6 +11,8 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE"]
 }));
+
+console.log(db);
 
 app.listen(PORT, () => {
     console.log(`Server Running at PORT: ${PORT}`);
