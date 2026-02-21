@@ -18,10 +18,10 @@ interface expressParams {
 
 export const userController =  {
     registerUser: async (req: Request, res: Response) => {
-        const {username, password, role, phone_Number, address} = req.body || {};
+        const {username, password, role, phone_Number} = req.body || {};
         const existingUser: any = await userModel.getAllByUsername(username);
 
-            if (!username || !password || !role || ! phone_Number || !address) {
+            if (!username || !password || !role || ! phone_Number) {
                 return res.status(400).json({
                     success: false, 
                     msg: "Error registration"
@@ -42,8 +42,7 @@ export const userController =  {
                 username, 
                 password: hashPassword, 
                 role, 
-                phone_Number, 
-                address
+                phone_Number
             });
 
             return res.status(200).json({
@@ -123,6 +122,8 @@ export const userController =  {
         }
 
         try {
+            const getUser = await userModel.getById(user_id);
+
             const isMatch = await serviceModel.verifyOtp(otp); 
             if (isMatch.length === 0) {
                 return res.status(400).json({
@@ -130,6 +131,12 @@ export const userController =  {
                     msg: "Otp does not match"
                 });
             } 
+
+            const user = getUser[0];
+
+            const token = jwt.sign(
+                {id: user.user_id}
+            )
 
         } catch (error) {
             console.error(error);

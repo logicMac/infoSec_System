@@ -10,7 +10,7 @@
 "moduleResolution": "bundler",
     "target": "esnext",
       "lib": ["esnext"],
-    "types": ["node" ,"express", "bcrypt", "cors"],
+    "types": ["node" ,"express", "bcrypt", "cors", "jsonwebtoken"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
