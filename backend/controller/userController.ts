@@ -4,6 +4,7 @@ import userModel from "../model/userModel.ts";
 import serviceModel from "../model/serviceModel.ts";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { sendOtp } from "../services/smsService.ts";
 
 dotenv.config();
 
@@ -91,13 +92,15 @@ export const userController =  {
             
             const otp: any = generateOTP();
             await serviceModel.saveOtp(otp);
+            await sendOtp(otp, userPassword.phone_Number);
 
             res.status(200).json({
                 success: true,
                 msg: "Session Created",
                 user: {
-                    username,
-                    user_id: userPassword.user_id
+                    username: userPassword.username,
+                    user_id: userPassword.user_id,
+                    role: userPassword.role
                 },
                 otp
             }); 
@@ -137,7 +140,7 @@ export const userController =  {
             const JWT_EXPIRES: string = process.env.JWT_EXPIRES || "1h";
 
             const token = jwt.sign(
-                {id: user.user_id},
+                {id: user.user_id, username: user.username, role: user.role},
                 JWT_SECRET,
                 { expiresIn: JWT_EXPIRES } as any, 
             );
