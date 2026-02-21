@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 dotenv.config();
 
 function generateOTP() {
-    return Math.floor(100000 + Math.random() & 900000);
+    return Math.floor(100000 + Math.random() * 900000);
 } 
 
 interface expressParams {
@@ -111,7 +111,7 @@ export const userController =  {
         }
     },
 
-    verifyUser: async ({req, res}: expressParams) => {
+    verifyUser: async (req: Request, res: Response) => {
         const {user_id, otp} = req.body || {};
 
         if (!user_id || !otp) {
@@ -122,9 +122,10 @@ export const userController =  {
         }
 
         try {
-            const getUser = await userModel.getById(user_id);
+            const getUser: any = await userModel.getById(user_id);
+            const user =  getUser[0];
 
-            const isMatch = await serviceModel.verifyOtp(otp); 
+            const isMatch: any = await serviceModel.verifyOtp(otp); 
             if (isMatch.length === 0) {
                 return res.status(400).json({
                     success: false,
@@ -132,14 +133,27 @@ export const userController =  {
                 });
             } 
 
-            const user = getUser[0];
+            const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
+            const JWT_EXPIRES: string = process.env.JWT_EXPIRES || "1h";
 
             const token = jwt.sign(
-                {id: user.user_id}
-            )
+                {id: user.user_id},
+                JWT_SECRET,
+                { expiresIn: JWT_EXPIRES } as any, 
+            );
+
+            return res.status(200).json({
+                success: true,
+                token,
+                msg: "User verified successfully"
+            });
 
         } catch (error) {
             console.error(error);
+            return res.status(500).json({
+                success: false,
+                msg: "Internal Server Error"
+            });
         }
     }
 }
