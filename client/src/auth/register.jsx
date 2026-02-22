@@ -20,14 +20,14 @@ export default function RegisterPage() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
 
-        for (const key in registerData) {
-            formData.append(key, (registerData)[key]);
+        if (registerData.password !== registerData.confirm_Password) {
+            setError("Password does not Match");
+            return;
         }
 
         try {
-            const res = await RegisterApi();
+            const res = await RegisterApi(registerData);
 
             if (!res.ok) {
                 setError(res.msg);
@@ -37,6 +37,7 @@ export default function RegisterPage() {
             navigate('/login');
         } catch (error) {
             console.log(error);
+            setError("An unexpected error occurred");
         }
     }
 

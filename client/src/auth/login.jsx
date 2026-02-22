@@ -26,7 +26,7 @@ export default function LoginPage() {
             }
 
             // After successful login, redirect to OTP page with user data
-            navigate("/otp", {
+            navigate("/otpPage", {
                 state: {
                     user_id: res.data.user.user_id,
                     username: res.data.user.username,

@@ -1,21 +1,34 @@
 import db from "../db.ts"
 
 const serviceModel = {
-    saveOtp: async(otp: string) => {
+    saveOtp: async(otp: string, user_id: number) => {
+        // Delete any existing OTPs for this user first (to avoid duplicates)
+        await db.query(`DELETE FROM users_otps WHERE users_id = ?`, [user_id]);
+        
+        // Insert new OTP
         const [row] = await db.query(`
-            INSERT INTO user_otps (otp) VALUES (?)
-        `, [otp]);
+            INSERT INTO users_otp (users_id, otp_code, created_at) VALUES (?, ?, NOW())
+        `, [user_id, otp]);
         
         return row;
     },
 
-    verifyOtp: async (otp: string) => {
-        const [row] = await db.query(`
-            SELECT * FROM user_otps WHERE otp = ?
-        `, [otp]);
+    verifyOtp: async (otp: string, user_id: number) => {
+        // Verify OTP matches AND is for the specific user, and not expired (within 5 minutes)
+        const [row]: any = await db.query(`
+            SELECT * FROM user_otps 
+            WHERE otp_code = ? 
+            AND users_id = ?
+            AND created_at > DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+        `, [otp, user_id]);
 
-        return [row];
-    } 
+        // If valid, delete the OTP to prevent reuse
+        if (row && row.length > 0) {
+            await db.query(`DELETE FROM user_otps WHERE users_id = ?`, [user_id]);
+        }
+        
+        return row;
+    }
     
 }
 

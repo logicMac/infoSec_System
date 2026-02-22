@@ -31,6 +31,7 @@ export async function RegisterApi(registerData: registerParams) {
         });
 
         const data = await res.json();
+        console.log(data);
 
         if (!res.ok) {
             return {
@@ -61,7 +62,7 @@ export async function LoginUserApi(loginData: loginParams) {
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({loginData})
+            body: JSON.stringify(loginData)
         });
         
         const data = await res.json();

@@ -98,6 +98,8 @@ export default function OtpPage() {
                 navigate("/staff");
             } else if (userData.role === "seller") {
                 navigate("/seller");
+            } else if (userData.role === "customer") {
+                navigate("/customer/dashboard");
             } else {
                 navigate("/");
             }
@@ -188,4 +190,3 @@ export default function OtpPage() {
         </div>
     );
 }
-

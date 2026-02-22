@@ -1,10 +1,5 @@
 import db from "../db.ts";
 
-interface params {
-    username: string;
-    user_id: number;
-}
-
 interface loginUserParams  {
     username: string,
     password: string
@@ -18,13 +13,15 @@ interface registerUserParams {
 }
 
 const userModel = {
-    getById: async (user_id: params) => {
+    getById: async (user_id: number) => {
         const [row] = await db.query(`
             SELECT * FROM users WHERE user_id = ?
-        `, [user_id])
+        `, [user_id]);
+
+        return row;
     },
 
-    getAllUser: async (username: params) => {   
+    getAllUser: async (username: string) => {   
         const [row] = await db.query(`
             SELECT * FROM users WHERE username = ?      
         `, [username]);
@@ -32,13 +29,13 @@ const userModel = {
         return row;
     }, 
 
-    getAllByUsername: async (username: params) => {
+    getAllByUsername: async (username: string) => {
         const [row] = await db.query(`
             SELECT * FROM users WHERE username = ? 
         `, [username]);
 
         return row;
-    }, 
+    },
 
     registerUser: async ({username, password, role, phone_Number}: registerUserParams) => {
         const [row] = await db.query(`
