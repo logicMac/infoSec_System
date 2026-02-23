@@ -9,7 +9,8 @@ interface registerUserParams {
     username: string,
     password: string,
     role: string,
-    phone_Number: string
+    phone_Number: string,
+    email: string
 }
 
 const userModel = {
@@ -17,6 +18,14 @@ const userModel = {
         const [row] = await db.query(`
             SELECT * FROM users WHERE user_id = ?
         `, [user_id]);
+
+        return row;
+    },
+
+    getByEmail: async (email: string) => {
+        const [row] = await db.query(`
+            SELECT * FROM users WHERE email = ?
+        `, [email]);
 
         return row;
     },
@@ -37,11 +46,11 @@ const userModel = {
         return row;
     },
 
-    registerUser: async ({username, password, role, phone_Number}: registerUserParams) => {
+    registerUser: async ({username, password, role, phone_Number, email}: registerUserParams) => {
         const [row] = await db.query(`
-            INSERT INTO users (username, password, role, phone_Number) 
-            VALUES (?, ?, ?, ?)
-        `, [username, password, role, phone_Number]);
+            INSERT INTO users (username, password, role, phone_Number, email) 
+            VALUES (?, ?, ?, ?, ?)
+        `, [username, password, role, phone_Number, email]);
 
         return row;
     },

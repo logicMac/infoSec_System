@@ -4,8 +4,7 @@ import userModel from "../model/userModel.ts";
 import serviceModel from "../model/serviceModel.ts";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { sendOtp } from "../services/smsService.ts";
-
+import { sendEmailOtp } from "../services/emailService.ts";
 dotenv.config();
 
 function generateOTP() {
@@ -19,25 +18,34 @@ interface expressParams {
 
 export const userController =  {
     registerUser: async (req: Request, res: Response) => {
-        const {username, password, role, phone_Number} = req.body || {};
+        const {username, password, role, phone_Number, email} = req.body || {};
 
         // Validate required fields FIRST before any database operations
-        if (!username || !password || !role || !phone_Number) {
+        if (!username || !password || !role || !phone_Number || !email) {
             return res.status(400).json({
                 success: false, 
-                msg: "All fields are required (username, password, role, phone_Number)"
+                msg: "All fields are required (username, password, role, phone_Number, email)"
             });
         }
         
         try {
             const existingUser: any = await userModel.getAllByUsername(username);
+            const existingMail: any = await userModel.getByEmail(email);
 
             // Add null check to prevent internal server error
-            if (!existingUser || existingUser.length > 0) {
+            if (existingUser && existingUser.length > 0) {
                 return res.status(400).json({
                     success: false, 
                     msg: "User already exists"
                 }); 
+            }
+
+            if (existingMail && existingMail.length > 0) {
+
+                return res.status(400).json({
+                    success: false,
+                    msg: "Email already exists"
+                })
             }
 
             const hashPassword = await bcrypt.hash(password, 10);
@@ -46,22 +54,25 @@ export const userController =  {
                 username, 
                 password: hashPassword, 
                 role, 
-                phone_Number
+                phone_Number,
+                email
             });
 
-            return res.status(200).json({
+            return res.status(201).json({
                 success: true, 
-                user: {registerUser},
+                user: registerUser,
                 msg: "User created successfully"
             });
 
+
         } catch (error) {
             console.error(error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false, 
                 msg: "Internal Server Error"
             });
         }
+
     },
     
     loginUser: async(req: Request, res: Response) => {
@@ -102,8 +113,8 @@ export const userController =  {
             
             // Send OTP and log the result
             console.log(">>> Calling sendOtp with phone:", userPassword.phone_Number);
-            const smsResult = await sendOtp(otp, userPassword.phone_Number);
-            console.log(">>> SMS Result:", smsResult);
+            const emailResult = await sendEmailOtp(otp, userPassword.email);
+            console.log(">>> EMAIL Result:", emailResult);
 
             res.status(200).json({
                 success: true,
@@ -113,7 +124,7 @@ export const userController =  {
                     user_id: userPassword.user_id,
                     role: userPassword.role
                 },
-                smsResult,
+                emailResult,
                 otp
             }); 
 
@@ -121,7 +132,7 @@ export const userController =  {
             console.error("Login error:", error);
             res.status(500).json({
                 success: false,
-                msg: "Internal Server Error"
+                msg: error
             })
         }
     },

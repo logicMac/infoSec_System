@@ -11,6 +11,7 @@ export default function RegisterPage() {
         password: "",
         confirm_Password: "",
         phone_Number: "",
+        email: "",
         role: "customer"
     });
 
@@ -24,6 +25,10 @@ export default function RegisterPage() {
         if (registerData.password !== registerData.confirm_Password) {
             setError("Password does not Match");
             return;
+        }
+
+        if (!registerData.email) {
+            setError("Please input email");
         }
 
         try {
@@ -94,6 +99,15 @@ export default function RegisterPage() {
                     className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
                     onChange={(e) =>
                         setRegisterData({ ...registerData, phone_Number: e.target.value })
+                    }
+                />
+
+                <input
+                    type="mail"
+                    placeholder="Email"
+                    className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
+                    onChange={(e) =>
+                        setRegisterData({ ...registerData, email: e.target.value })
                     }
                 />
 

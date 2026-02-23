@@ -8,3 +8,6 @@ client/node_modules/
 # Ignore environment files
 .env
 .env.*
+
+//sms service
+backend/services/smsServie.ts

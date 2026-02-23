@@ -9,14 +9,6 @@ export async function sendOtp(otp: string, phone_Number: string) {
     const phone = phone_Number.replace(/^0/, "63");
     const message = `Your verification code is ${otp} Do not share this code.`
 
-    // Log the request details
-    console.log("=== PhilSMS API Request ===");
-    console.log("URL: https://dashboard.philsms.com/api/v3/sms/send");
-    console.log("Phone:", phone);
-    console.log("Message:", message);
-    console.log("API Key:", process.env.PHILSMS_API_KEY ? "✓ Set" : "✗ Not Set");
-    console.log("==============================");
-
     try {
         const res = await fetch("https://dashboard.philsms.com/api/v3/sms/send", {
             method: 'POST',
@@ -27,7 +19,7 @@ export async function sendOtp(otp: string, phone_Number: string) {
             },
             body: JSON.stringify({
                 recipient: phone,
-                sender_id: process.env.PHILSMS_SENDER_ID || "PHILSMS",
+                sender_id: process.env.PHILSMS_SENDER_ID,
                 type: 'plain',
                 message: message      
             })      
@@ -35,7 +27,6 @@ export async function sendOtp(otp: string, phone_Number: string) {
 
         const data = await res.json();
         
-        // Log the full response
         console.log("=== PhilSMS API Response ===");
         console.log("Status:", res.status, res.statusText);
         console.log("Response Data:", JSON.stringify(data, null, 2));
