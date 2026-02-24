@@ -124,8 +124,7 @@ export const userController =  {
                     user_id: userPassword.user_id,
                     role: userPassword.role
                 },
-                emailResult,
-                otp
+                emailResult
             }); 
 
         } catch (error) {
