@@ -10,7 +10,7 @@
 "moduleResolution": "bundler",
     "target": "esnext",
       "lib": ["esnext"],
-    "types": ["node" ,"express", "bcryptjs", "cors", "jsonwebtoken"],
+    "types": ["node" ,"express", "bcryptjs", "cors", "jsonwebtoken", "multer"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -41,5 +41,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["**/*.ts", "**/*.d.ts"]
 }

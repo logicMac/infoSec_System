@@ -29,14 +29,23 @@ CREATE TABLE user_otps (
 
 CREATE TABLE products (
     product_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_id INT,
     product_name VARCHAR(255) NOT NULL,
     product_description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
     image VARCHAR(255),
+    size ENUM("M", "S", "L", "XL", "XXL");
     created_at TIMESTAMP CURRENT_TIMESTAMP,
     updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    FOREIGN KEY(category_id) REFERENCES products(category_id) ON DELETE CASCADE
 );
+
+CREATE TABLE product_categories (
+    category_id INT PRIMARY_KEY AUTO_INCREMENT,
+    category_name VARCHAR(255);
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
 
 CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,

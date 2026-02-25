@@ -3,9 +3,9 @@ import productModel from "../model/productModel";
 
 const productController = {
     saveProduct: async (req: Request, res: Response) => {
-        const {product_name, product_description, price, stock, image, size } = req.body || {};
+        const {product_name, product_description, price, stock, image, size, SKU } = req.body || {};
 
-
+        //validate the fields first 
         if (!product_name || !product_description || !price) {
             return res.status(400).json({
                 success: false,
@@ -15,9 +15,11 @@ const productController = {
 
 
         try {
+            //check if any product exists in the databae
             const ifExist: any = await productModel.getProductByName(product_name);
             const exist = ifExist[0];
 
+            //validation if there is product
             if (exist && exist.length > 0) {
                 return res.status(400).json({
                     success: false,
@@ -25,8 +27,18 @@ const productController = {
                 });
             } 
 
+            //Fetch product from database 
             const product = await productModel.getAllProduct();
 
+            //pass product to the model 
+            await productModel.saveProduct(
+                {
+                    product_name, product_description, 
+                    price, stock, image, size, SKU
+                }
+            )
+
+            //return response
             return res.status(200).json({
                 success: true,
                 msg: "Product saved successfully",
