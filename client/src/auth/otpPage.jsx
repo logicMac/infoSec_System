@@ -84,8 +84,8 @@ export default function OtpPage() {
             }
 
             // Store token and user data
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("user", JSON.stringify({
+            sessionStorage.setItem("token", res.data.token);
+            sessionStorage.setItem("user", JSON.stringify({
                 username: userData.username,
                 role: userData.role,
                 user_id: userData.user_id

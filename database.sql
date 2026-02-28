@@ -34,6 +34,7 @@ CREATE TABLE products (
     product_description TEXT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL DEFAULT 0,
+    SKU VARCHAR(255),
     image VARCHAR(255),
     size ENUM("M", "S", "L", "XL", "XXL");
     created_at TIMESTAMP CURRENT_TIMESTAMP,
@@ -55,3 +56,9 @@ CREATE TABLE orders (
     address VARCHAR(255) FOREIGN KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
+
+CREATE TABLE NOTIFICATIONS (
+    notification_id INT PRIMARY_KEY AUTO_INCREMENT,
+    notification VARCHAR(255),
+    
+)

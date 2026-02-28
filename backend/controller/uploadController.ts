@@ -52,5 +52,3 @@ export const uploadImage = async (req: Request, res: Response) => {
         })
     }
 }
-
-export default uploadImage;

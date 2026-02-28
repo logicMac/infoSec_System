@@ -2,6 +2,7 @@ import LoginPage from "./auth/login"
 import RegisterPage from "./auth/register"
 import OtpPage from "./auth/otpPage"
 import CustomerDashboard from "./customer/Dashboard"
+import AdminDashboard from "./admin/dashboard"
 import { Route, Router, Routes } from "react-router-dom"
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
           <Route path="/login" element={<LoginPage/>}/>
           <Route path="/otpPage" element={<OtpPage/>}/>
           <Route path="/customer/dashboard" element={<CustomerDashboard/>}/>
+          <Route path="admin/dashboard" element={<AdminDashboard/>}/>
       </Routes>
     </>
-  )
+  ) 
 }
 
 export default App

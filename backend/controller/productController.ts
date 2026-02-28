@@ -15,7 +15,7 @@ const productController = {
 
 
         try {
-            //check if any product exists in the databae
+            //check if any product exists in the database
             const ifExist: any = await productModel.getProductByName(product_name);
             const exist = ifExist[0];
 

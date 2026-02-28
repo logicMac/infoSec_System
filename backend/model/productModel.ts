@@ -11,11 +11,13 @@ interface productParams {
 }
 
 const productModel = {
+    //fetch all product
     getAllProduct: async () => {
         const [row] = `SELECT * FROM products WHERE product_id`;
         return row;
     },
 
+    //fetch product by name
     getProductByName: async (product_name: string) => {
         const [row] = await db.query(
             `SELECT * FROM products WHERE product_name = ? 
@@ -24,6 +26,7 @@ const productModel = {
         return row;
     },
 
+    //delete product by name
     deleteProductById: async (id: number) => {
         const [row] = await db.query(`
             DELETE FROM products WHERE product_id = ?    
@@ -32,6 +35,7 @@ const productModel = {
         return row;
     },
 
+    //save product to database
     saveProduct: async ({
         product_name, product_description, price, stock, 
         image, size, SKU}: productParams ) => {

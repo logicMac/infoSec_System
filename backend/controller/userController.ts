@@ -17,6 +17,8 @@ interface expressParams {
 }
 
 export const userController =  {
+
+    //register controllerr
     registerUser: async (req: Request, res: Response) => {
         const {username, password, role, phone_Number, email} = req.body || {};
 
@@ -29,7 +31,9 @@ export const userController =  {
         }
         
         try {
+            //find if the user is already registered by usedrname
             const existingUser: any = await userModel.getAllByUsername(username);
+            //find if the email already exists
             const existingMail: any = await userModel.getByEmail(email);
 
             // Add null check to prevent internal server error
@@ -40,16 +44,20 @@ export const userController =  {
                 }); 
             }
 
+            //validate query if there is an existing email
             if (existingMail && existingMail.length > 0) {
 
+                //return response
                 return res.status(400).json({
                     success: false,
                     msg: "Email already exists"
-                })
+                });
             }
 
+            //hash users entered password
             const hashPassword = await bcrypt.hash(password, 10);
 
+            ////register user if he meets all the requirements 
             const registerUser = await userModel.registerUser({
                 username, 
                 password: hashPassword, 
@@ -58,6 +66,7 @@ export const userController =  {
                 email
             });
 
+            //return response
             return res.status(201).json({
                 success: true, 
                 user: registerUser,
@@ -75,6 +84,7 @@ export const userController =  {
 
     },
     
+    //login controller
     loginUser: async(req: Request, res: Response) => {
         const {username, password} = req.body || {};
 
@@ -87,6 +97,7 @@ export const userController =  {
         }
 
         try {
+            //get user by username
             const user: any = await userModel.getAllByUsername(username);
 
             // Add null check for user to prevent internal server error
@@ -99,6 +110,7 @@ export const userController =  {
 
             const userPassword = user[0];
             
+            //validate if password match user's entered password
             const isMatch = await bcrypt.compare(password, userPassword.password);
             if (!isMatch) {
                 return res.status(400).json({
@@ -106,7 +118,8 @@ export const userController =  {
                     msg: "Password does not match"
                 });
             }
-            
+    
+            //call the generateOtp function to generate otp
             const otp: any = generateOTP();
             // Pass user_id to saveOtp to link OTP with the user
             await serviceModel.saveOtp(otp, userPassword.user_id);
@@ -116,6 +129,7 @@ export const userController =  {
             const emailResult = await sendEmailOtp(otp, userPassword.email);
             console.log(">>> EMAIL Result:", emailResult);
 
+            //retrurn response
             res.status(200).json({
                 success: true,
                 msg: "Session Created",
@@ -127,6 +141,7 @@ export const userController =  {
                 emailResult
             }); 
 
+        //error catching
         } catch (error) {
             console.error("Login error:", error);
             res.status(500).json({
@@ -136,9 +151,11 @@ export const userController =  {
         }
     },
 
+    //verify user controller
     verifyUser: async (req: Request, res: Response) => {
         const {user_id, otp} = req.body || {};
 
+        //validate first if there is data sent to backend 
         if (!user_id || !otp) {
             return res.status(400).json({
                 success: false,
