@@ -11,3 +11,6 @@ client/node_modules/
 
 //sms service
 backend/services/smsServie.ts
+
+//database
+database.sql

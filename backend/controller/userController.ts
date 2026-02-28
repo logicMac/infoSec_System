@@ -7,18 +7,14 @@ import bcrypt from "bcryptjs";
 import { sendEmailOtp } from "../services/emailService.ts";
 dotenv.config();
 
+//Function to generate otp returns a string 
 function generateOTP() {
     return Math.floor(100000 + Math.random() * 900000);
 } 
 
-interface expressParams {
-    req: Request,
-    res: Response
-}
-
 export const userController =  {
 
-    //register controllerr
+    //register logic
     registerUser: async (req: Request, res: Response) => {
         const {username, password, role, phone_Number, email} = req.body || {};
 
@@ -73,9 +69,11 @@ export const userController =  {
                 msg: "User created successfully"
             });
 
-
+        //catch error if try fails 
         } catch (error) {
             console.error(error);
+
+            //return response
             return res.status(500).json({
                 success: false, 
                 msg: "Internal Server Error"
@@ -84,12 +82,13 @@ export const userController =  {
 
     },
     
-    //login controller
+    //login logic
     loginUser: async(req: Request, res: Response) => {
         const {username, password} = req.body || {};
 
         // Validate required fields FIRST
         if (!username || !password) {
+            //return response
             return res.status(400).json({
                 success: false,
                 msg: "Username and password are required"
@@ -129,7 +128,7 @@ export const userController =  {
             const emailResult = await sendEmailOtp(otp, userPassword.email);
             console.log(">>> EMAIL Result:", emailResult);
 
-            //retrurn response
+            //return response
             res.status(200).json({
                 success: true,
                 msg: "Session Created",
@@ -144,6 +143,7 @@ export const userController =  {
         //error catching
         } catch (error) {
             console.error("Login error:", error);
+            //return response
             res.status(500).json({
                 success: false,
                 msg: error
@@ -151,7 +151,7 @@ export const userController =  {
         }
     },
 
-    //verify user controller
+    //verify user logic
     verifyUser: async (req: Request, res: Response) => {
         const {user_id, otp} = req.body || {};
 
@@ -163,10 +163,14 @@ export const userController =  {
             });
         }
 
+        //get user by id 
         try {
             const getUser: any = await userModel.getById(user_id);
 
+            //validate if the user exists
             if (!getUser || getUser.length === 0) {
+
+                //return response
                 return res.status(400).json({
                     success: false,
                     msg: "User not found"
@@ -175,6 +179,7 @@ export const userController =  {
 
             const user = getUser[0];
 
+            //validate if the otp entered is matched in the db 
             const isMatch: any = await serviceModel.verifyOtp(otp, user_id); 
             if (!isMatch || isMatch.length === 0) {
                 return res.status(400).json({
@@ -183,23 +188,29 @@ export const userController =  {
                 });
             } 
 
+            //get JWT token key
             const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
+            //get JWT expiration
             const JWT_EXPIRES: string = process.env.JWT_EXPIRES || "1h";
 
+            //Sign the token
             const token = jwt.sign(
                 {id: user.user_id, username: user.username, role: user.role},
                 JWT_SECRET,
                 { expiresIn: JWT_EXPIRES } as any, 
             );
 
+            //return response
             return res.status(200).json({
                 success: true,
                 token,
                 msg: "User verified successfully"
             });
-
-        } catch (error) {
+        
+        //catch error if try fails
+        } catch (error) {   
             console.error(error);
+            //return response
             return res.status(500).json({
                 success: false,
                 msg: "Internal Server Error"
