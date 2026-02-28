@@ -153,7 +153,7 @@ export const userController =  {
 
     //verify user logic
     verifyUser: async (req: Request, res: Response) => {
-        const {user_id, otp} = req.body || {};
+        const {user_id, otp} = req.body || {}; 
 
         //validate first if there is data sent to backend 
         if (!user_id || !otp) {
@@ -181,10 +181,17 @@ export const userController =  {
 
             //validate if the otp entered is matched in the db 
             const isMatch: any = await serviceModel.verifyOtp(otp, user_id); 
-            if (!isMatch || isMatch.length === 0) {
+            const maxAttempts = 5;
+             
+            
+            //validate if the otp is match and its in valid attempts 
+            if (!isMatch || isMatch.length === 0)
+                
+                {
                 return res.status(400).json({
                     success: false,
-                    msg: "Otp does not match"
+                    msg: "Otp does not match",
+                    
                 });
             } 
 

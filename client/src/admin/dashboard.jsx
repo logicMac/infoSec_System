@@ -13,14 +13,8 @@ export default function AdminDashboard() {
             setUser(parsedUser);
                 
             // Redirect if not a customer
-            if (parsedUser.role !== "customer") {
-                if (parsedUser.role === "admin") {
-                    navigate("/admin");
-                } else if (parsedUser.role === "staff") {
-                    navigate("/staff");
-                } else if (parsedUser.role === "seller") {
-                    navigate("/seller");
-                }
+            if (parsedUser.role !== "admin") {
+                navigate("/Notfound404");
             }
         } else {
             // No user data, redirect to login

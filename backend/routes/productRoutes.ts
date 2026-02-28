@@ -1,8 +1,9 @@
 import express from "express";
-import { uploadImage } from "../controller/uploadController";
+import productController from "../controller/productController";
+import upload from "../middlewares/upload";
 
 const router = express.Router();
 
-router.use("/uploadImage", uploadImage);
+router.use("/saveProduct", upload.single("image"),productController.saveProduct);
 
 export default router;

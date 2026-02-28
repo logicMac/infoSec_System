@@ -1,5 +1,6 @@
 import {Request, Response } from "express";
 import productModel from "../model/productModel";
+import upload from "../middlewares/upload";
 
 const productController = {
     saveProduct: async (req: Request, res: Response) => {

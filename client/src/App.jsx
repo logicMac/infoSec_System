@@ -3,6 +3,7 @@ import RegisterPage from "./auth/register"
 import OtpPage from "./auth/otpPage"
 import CustomerDashboard from "./customer/Dashboard"
 import AdminDashboard from "./admin/dashboard"
+import NotFound404 from "./pages/Notfound404"
 import { Route, Router, Routes } from "react-router-dom"
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/otpPage" element={<OtpPage/>}/>
           <Route path="/customer/dashboard" element={<CustomerDashboard/>}/>
           <Route path="admin/dashboard" element={<AdminDashboard/>}/>
+          <Route path="*" element={<NotFound404/>}/>
       </Routes>
     </>
   ) 

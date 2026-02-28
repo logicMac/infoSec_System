@@ -28,6 +28,14 @@ const serviceModel = {
         }
         
         return row;
+    },
+
+    saveOtpAttempts: async (attempts: number) => {
+        const [row] = await db.query(`
+            INSERT INTO user_otps (attempts) VALUES (?)   
+        `, [attempts]);
+
+        return row;
     }
     
 }
