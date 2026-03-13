@@ -4,6 +4,8 @@ import upload from "../middlewares/upload";
 
 const router = express.Router();
 
+//routes for product controller
 router.use("/saveProduct", upload.single("image"),productController.saveProduct);
 
+//export route
 export default router;

@@ -1,7 +1,7 @@
 import {Request, Response } from "express";
 import productModel from "../model/productModel";
-import upload from "../middlewares/upload";
 
+//product controller
 const productController = {
     saveProduct: async (req: Request, res: Response) => {
         const {product_name, product_description, price, stock, image, size, SKU } = req.body || {};
@@ -13,7 +13,6 @@ const productController = {
                 msg: "Please provide all fields that needs for product"
             })
         }
-
 
         try {
             //check if any product exists in the database
@@ -46,6 +45,7 @@ const productController = {
                 product
             });
 
+        //catch error if try fails    
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -55,8 +55,9 @@ const productController = {
         }
     },
     
+
     deleteProduct: async(req: Request, res: Response) => {
-        const {product_id} = req.body || {};
+        const {product_id} = req.body.params || {};
 
         if(!product_id) {
             return res.status(400).json({

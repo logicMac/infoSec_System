@@ -51,6 +51,17 @@ const productModel = {
         ]);
 
         return row;
+    },
+    
+    udpdateProduct: async({id}) => {
+        const [row] = await db.query(`
+            UPDATE TABLE products
+            SET product_name = ?, product_description = ?
+            price = ?, stock = ?, image = ?, size = ? SKU = ?
+            WHERE product_id = ?
+        `);
+
+        return row;
     }
 }
 
