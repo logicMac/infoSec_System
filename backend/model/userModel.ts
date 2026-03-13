@@ -60,14 +60,36 @@ const userModel = {
         return row;
     },
     
+    //login user 
     loginUser: async ({username, password}: loginUserParams) => {
         const [row] = await db.query(`
             SELECT * FROM users WHERE username = ? AND  password = ?
         `, [username, password]);
 
         return row; 
-    } 
+    },
 
+    //update user
+    updateUser: async({id}) => {
+        const [row] = await db.query(`
+            UPDATE TABLE users 
+            SET username = ?, password = ?, 
+            phone_number = ?, email = ?
+            WHERE user.user_id = ? 
+        `);
+
+        return row;
+    },
+
+    //delete user
+    deleteUser: async({id}) => {
+        const [row] = await db.query(`
+            DELETE users WHERE user_id = ?    
+            `, [id]
+        );
+
+        return row;
+    }
 }
 
 export default userModel;
