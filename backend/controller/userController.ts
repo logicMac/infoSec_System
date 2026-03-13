@@ -223,5 +223,39 @@ export const userController =  {
                 msg: "Internal Server Error"
             });
         }
+    },
+
+    //delete user logic 
+    deleteUser: async(req: Request, res: Response) => {
+        //get id from api
+        const {id} = req.params
+        
+        try {
+            //validate first if there's id 
+            if (!id) {
+                //return bad response
+                return res.status(400).json({
+                    success: false,
+                    msg: "Failed to delete user"
+                });
+            }
+
+            //call deleteUser Model
+            const deleteUser: any = await userModel.deleteUser(id);
+
+            //return good response
+            res.status(200).json({
+                success: false,
+                msg: "User Deleted Successfully"
+            });
+
+        //catch error if try fails 
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                msg: "Internal Server Error"
+            })
+        }
     }
 }
