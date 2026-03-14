@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminDashboard() {
+export default function CustomerDashboard() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         // Get user data from localStorage
-        const userData = localStorage.getItem("user");
+        const userData = sessionStorage.getItem("user");
         if (userData) {
             const parsedUser = JSON.parse(userData);
             setUser(parsedUser);
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
        
             <header className="bg-gray-100 shadow-sm border border-gray-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                    <h1 className="text-2xl font-bold text-gray-900">Customer Dashboard</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
                     <div className="flex items-center gap-4">
                         <span className="text-gray-600">Welcome, {user.username}!</span>
                         <button

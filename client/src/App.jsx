@@ -14,8 +14,8 @@ function App() {
           <Route path="/register" element={<RegisterPage/>}/>
           <Route path="/login" element={<LoginPage/>}/>
           <Route path="/otpPage" element={<OtpPage/>}/>
-          <Route path="/customer/dashboard" element={<CustomerDashboard/>}/>
           <Route path="admin/dashboard" element={<AdminDashboard/>}/>
+          <Route path="customer/dashboard" element={<CustomerDashboard/>}/>
           <Route path="*" element={<NotFound404/>}/>
       </Routes>
     </>

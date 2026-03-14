@@ -84,7 +84,7 @@ const userModel = {
     },
 
     //update user
-    updateUser: async({id}) => {
+    updateUser: async(id: string) => {
         const [row] = await db.query
         (`
             UPDATE TABLE users 
@@ -97,10 +97,10 @@ const userModel = {
     },
 
     //delete user
-    deleteUser: async(id) => {
+    deleteUser: async(id: number) => {
         const [row] = await db.query
         (`
-            DELETE users WHERE user_id = ?    
+            DELETE FROM users WHERE user_id = ?    
             `, [id]
         );
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import dotenv from "dotenv";
-import userModel from "../model/userModel.ts";
+import userModel from "../model/userModel";
 import serviceModel from "../model/serviceModel.ts";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -238,10 +238,10 @@ export const userController =  {
                     success: false,
                     msg: "Failed to delete user"
                 });
-            }
+            } 
 
             //call deleteUser Model
-            const deleteUser: any = await userModel.deleteUser(id);
+            const deleted: any = await userModel.deleteUser(id);
 
             //return good response
             res.status(200).json({

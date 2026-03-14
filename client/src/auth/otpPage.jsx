@@ -93,7 +93,7 @@ export default function OtpPage() {
 
             // Redirect based on role
             if (userData.role === "admin") {
-                navigate("/admin");
+                navigate("/admin/dashboard");
             } else if (userData.role === "staff") {
                 navigate("/staff");
             } else if (userData.role === "seller") {
