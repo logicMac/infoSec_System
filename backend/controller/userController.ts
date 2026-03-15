@@ -62,6 +62,12 @@ export const userController =  {
                 email
             });
 
+            const id = registerUser.insertId;
+
+            if (role === 'seller') {
+                await userModel.saveSellerId(id);
+            }
+
             //return response
             return res.status(201).json({
                 success: true, 
@@ -241,7 +247,7 @@ export const userController =  {
             } 
 
             //call deleteUser Model
-            const deleted: any = await userModel.deleteUser(id);
+            const deleted: any = await userModel.deleteUser(Number(id));
 
             //return good response
             res.status(200).json({

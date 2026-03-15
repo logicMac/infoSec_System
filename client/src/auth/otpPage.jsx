@@ -95,9 +95,9 @@ export default function OtpPage() {
             if (userData.role === "admin") {
                 navigate("/admin/dashboard");
             } else if (userData.role === "staff") {
-                navigate("/staff");
+                navigate("/staff/dashboard");
             } else if (userData.role === "seller") {
-                navigate("/seller");
+                navigate("/seller/dashboard");
             } else if (userData.role === "customer") {
                 navigate("/customer/dashboard");
             } else {

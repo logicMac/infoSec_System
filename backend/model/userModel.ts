@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import db from "../db.ts";
 
 interface loginUserParams  {
@@ -62,7 +63,7 @@ const userModel = {
             phone_Number, email
         }: registerUserParams) => {
             
-        const [row] = await db.query
+        const [row] = await db.query<ResultSetHeader>
         (`
             INSERT INTO users (username, password, role, phone_Number, email) 
             VALUES (?, ?, ?, ?, ?)
@@ -72,7 +73,7 @@ const userModel = {
         return row;
     },
     
-    //login user 
+    //login user
     loginUser: async ({username, password}: loginUserParams) => {
         const [row] = await db.query
         (`
@@ -105,6 +106,15 @@ const userModel = {
         );
 
         return row;
+    },
+
+    saveSellerId: async(user_id: number) => {
+        const [result] = await db.query(`
+            INSERT INTO shops(user_id) VALUES (?)    
+            `,[user_id]
+        );
+
+        return result;
     }
 }
 
