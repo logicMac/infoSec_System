@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import db from "../db"
 
 const shopModel = {
@@ -18,13 +19,28 @@ const shopModel = {
         status: string
     ) => {
             
-        const [result] = await db.query(`
+        const [result] = await db.query<ResultSetHeader>(`
            INSERT INTO shop(user_id, shop_name, shop_description, shop_logo, status) 
-                                    VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
             `,[id, shop_name, shop_description, shop_logo, status] 
         );
 
         return result;
+    },
+
+    saveSellerDocs: async(shop_id: number , document_type: string, document_file: string) => {
+        const [result] = await db.query(`
+            INSERT INTO seller_documents( shop_id, document_type, document_file) VALUES (?, ?, ?)      
+            `,[ shop_id, document_type, document_file]
+        )
+
+        return result;
+    },
+
+    getAllSellerShops: async() => {
+        const [result] = await db.query(`
+            SELECT shops.shop_name, 
+        `)
     }
 }
 
