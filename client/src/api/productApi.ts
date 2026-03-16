@@ -41,8 +41,10 @@ export async function addProduct(productData:addProductParams) {
 
 export async function deleteProduct(id: number) {
     if (!id) {
-        console.log("Product ID not sent to Api");
-        return;
+        return {
+            ok: false,
+            msg: "Product ID not sent to backend"
+        }
     }
 
     try {

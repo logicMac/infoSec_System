@@ -3,6 +3,7 @@ import cors from 'cors';
 import db from './db.ts';
 import userRoutes from './routes/userRoutes.ts'
 import productRoutes from './routes/productRoutes.ts'
+import shopRoutes from './routes/shopRoutes.ts'
 
 const app = express();
 const PORT = 3000;
@@ -20,7 +21,7 @@ console.log(db);
 
 app.use("/users", userRoutes);
 app.use("products", productRoutes);
-
+app.use("/shops", shopRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server Running at PORT: ${PORT}`);
