@@ -7,25 +7,25 @@ export default function NavBar() {
     const [open, setOpen] = useState(false);
 
     const handleLogout = () => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
             navigate("/login");
     };
 
     return(
          <header className="bg-white shadow-sm border border-gray-200 p-5">
-                    <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between space-x-4">
+                    <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between ">
 
                         {/* Logo */}
-                        <div className="flex flex-row items-center h-12 w-32">
-                            <p className="text-3xl text-black font-semibold">ShopX</p>
-                            <img src={Applogo} className="text-3xl font-semibold text-black object-contain"/>
+                        <div className="flex items-center h-12 w-32 -space-x-1">
+                            <p className="text-3xl text-black font-semibold m-0 leading-none">ShopX</p>
+                            <img src={Applogo} className="text-3xl font-semibold text-black object-contain ml-0"/>
                         </div>
 
                         {/*Nav*/}
                         <div className="flex flex-row space-x-5 text-black">
                             <Link>Dashboard</Link>
-                            <Link>Products</Link>
+                            <Link to='/seller/products'>Products</Link>
                             <Link>Shop</Link>
                             <Link>Orders</Link>
                         </div>

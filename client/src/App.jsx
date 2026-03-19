@@ -5,6 +5,8 @@ import CustomerDashboard from "./customer/Dashboard"
 import AdminDashboard from "./admin/dashboard"
 import SellerDashboard from "./seller/dashboard"
 import NotFound404 from "./pages/Notfound404"
+import NavBar from "./seller/nav";
+import Products from "./seller/products"
 import { Route, Router, Routes } from "react-router-dom"
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
           <Route path="admin/dashboard" element={<AdminDashboard/>}/>
           <Route path="customer/dashboard" element={<CustomerDashboard/>}/>
           <Route path="seller/dashboard" element={<SellerDashboard/>}/>
+          <Route path="/seller/products" element={<Products/>}/>
           <Route path="*" element={<NotFound404/>}/>
       </Routes>
     </>
