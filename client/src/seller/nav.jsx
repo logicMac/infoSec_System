@@ -24,7 +24,7 @@ export default function NavBar() {
 
                         {/*Nav*/}
                         <div className="flex flex-row space-x-5 text-black">
-                            <Link>Dashboard</Link>
+                            <Link to='/seller/dashboard'>Dashboard</Link>
                             <Link to='/seller/products'>Products</Link>
                             <Link>Shop</Link>
                             <Link>Orders</Link>
