@@ -33,12 +33,12 @@ export default function NavBar() {
                     
                         {/* Profile */}
                         <div className="relative">
-                            <button className="bg-white p-3 rounded-full">
+                            <button className="bg-gray-200 p-3 rounded-full">
                                 <i onClick={() => setOpen(true)} className="fa-solid fa-user"></i>
                             </button>
 
                         {open && (
-                                <div className="flex flex-col text-center items-center absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
+                                <div className="flex flex-col text-center items-center absolute right-0 mt-2 w-40 bg-white border border-gray-400 rounded-md shadow-lg">
                                 <div className="flex flex-col items-center">
                                     <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                         Profile

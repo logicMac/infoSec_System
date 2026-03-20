@@ -7,32 +7,54 @@ export default function Products() {
 
     return(
 
-        <div className="bg-gray-100 h-full">
+        <div className=" bg-gray-100 h-full">
             <NavBar/>   
 
-            <div className="flex justify-center items-center mt-5">
-                <table className="w-full">
-                    <thead>
-                        <tr className="">
-                            <th className="px-4">ID</th>
-                            <th className="px-4">Name</th>
-                            <th className="px-4">Price</th>
-                            <th className="px-4">Stock</th>
-                            <th className="px-4">Category</th>
+            <div className="flex flex-col m-10 space-y-2">
+                <div className="flex flex-row justify-between items-start">
+                    <p className="text-3xl font-semibold">Manage Products</p>
+
+                    <div className="flex gap-4">
+                        <button className="p-3 bg-gray-300 rounded-md text-black">Media Center</button>
+                        <button className="p-3 bg-gray-300 rounded-md text-black">Bulk Action</button>
+                        <button className="p-3 bg-black rounded-md text-white ">Add Product</button>
+                    </div>
+                </div>
+
+                <div className="bg-white h-50">
+                    <div className="flex flex-row justify-center p-5 gap-5 h-full">
+                        <div className="bg-gray-200 w-110">r</div>
+                        <div className="bg-gray-200 w-110">e</div>
+                        <div className="bg-gray-200 w-110">e</div>
+                        <div className="bg-gray-200 w-110">e</div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex items-center m-10">
+                <table className="w-full bg-white">
+                    <thead className="">
+                        <tr className="border-b border-gray-400 p-5">
+                            <th className="px-4 py-4">ID</th>
+                            <th className="px-4 py-4">Name</th>
+                            <th className="px-4 py-4">Price</th>
+                            <th className="px-4 py-4">Stock</th>
+                            <th className="px-4 py-4">Category</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="border-b">
-                            <td className="">Mac</td>
-                            <td>Dumas</td>
-                            <td>ates</td>
-                            <td></td>
-                        </tr>
-                        <tr className="border-b">
-                            <td className="">Mac</td>
-                            <td>Dumas</td>
-                            <td>ates</td>
-                            <td></td>
+                        <tr className="text-center border-b border-gray-300">
+                            <td className="px-4 py-4">Mac</td>
+                            <td className="px-4 py-4">Dumas</td>
+                            <td className="px-4 py-4">ates</td>   
+                            <td className="px-4 py-4"></td>
+                            <td className="px-4 py-4"></td>
+                            <td className="px-4 py-4 gap-4">
+                                <i className="fas fa-eye text-blue-500 hover:text-blue-700 cursor-pointer mx-1"></i>
+                                <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"></i>
+                                <i className="fas fa-trash text-red-500 hover:text-red-700 cursor-pointer mx-1"></i>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
