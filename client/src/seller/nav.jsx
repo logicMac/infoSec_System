@@ -20,7 +20,7 @@ export default function NavBar() {
                         </div>
 
                         {/*Nav*/}
-                        <div className="flex flex-row space-x-5 text-black items-center">
+                        <div className="flex flex-row space-x-10 text-black items-center">
                             <Link to='/seller/dashboard'>Dashboard</Link>
                             <Link to='/seller/products'>Products</Link>
                             <Link>Shop</Link>
