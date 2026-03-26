@@ -1,6 +1,6 @@
 import { useState } from "react";
 import NavBar from "./nav";
-import Modal from "../modals/Modal";
+import Modal from "../modals/Modal.jsx";
 
 export default function Products() {
     const[isOpen, setIsOpen] = useState(null);
@@ -15,18 +15,7 @@ export default function Products() {
                     <p className="text-3xl font-semibold">Manage Products</p>
 
                     <div className="flex gap-4">
-                        <button className="p-3 bg-gray-300 rounded-md text-black">Media Center</button>
-                        <button className="p-3 bg-gray-300 rounded-md text-black">Bulk Action</button>
-                        <button className="p-3 bg-black rounded-md text-white ">Add Product</button>
-                    </div>
-                </div>
-
-                <div className="bg-white h-50">
-                    <div className="flex flex-row justify-center p-5 gap-5 h-full">
-                        <div className="bg-gray-200 w-110">r</div>
-                        <div className="bg-gray-200 w-110">e</div>
-                        <div className="bg-gray-200 w-110">e</div>
-                        <div className="bg-gray-200 w-110">e</div>
+                        <button className="p-2 bg-black rounded-md text-white w-40">Add Product</button>
                     </div>
                 </div>
             </div>
