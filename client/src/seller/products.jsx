@@ -15,7 +15,12 @@ export default function Products() {
                     <p className="text-3xl font-semibold">Manage Products</p>
 
                     <div className="flex gap-4">
-                        <button className="p-2 bg-black rounded-md text-white w-40">Add Product</button>
+                        <button 
+                            className="p-2 bg-black rounded-md text-white w-40"
+                            onClick={() => {setIsOpen(true)}}
+                            >
+                                Add Product
+                        </button>
                     </div>
                 </div>
             </div>
