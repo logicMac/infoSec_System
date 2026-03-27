@@ -1,9 +1,38 @@
 import { useState } from "react";
 import NavBar from "./nav";
 import Modal from "../modals/Modal.jsx";
+import { addProduct } from "../api/productApi.js";
 
 export default function Products() {
-    const[isOpen, setIsOpen] = useState(null);
+    const[isOpen, setIsOpen] = useState(false);
+    const[product, setProduct] = useState({});
+    const[userData, setUserData] = useState(null);
+    const user = sessionStorage.getItem("user");
+    const parsedUser = JSON.parse(user);
+    
+
+    const handleAddProduct = async (e) => {
+        e.preventDefault();
+
+        if (!product) {
+            console.log("No data sent to state");
+            return;
+        }
+
+        setUserData(parsedUser);
+
+        if (parsedUser.role !== 'seller') {
+            console.log("You cannot add product");
+            return
+        }
+        
+        try {
+            const res = await addProduct(product, userData);
+            console.log(res.msg);
+        } catch (err) {
+            console.log("Cannot send data to API", err);
+        }
+    }
 
     return(
 
@@ -11,7 +40,7 @@ export default function Products() {
             <NavBar/>   
 
             <div className="flex flex-col m-10 space-y-2">
-                <div className="flex flex-row justify-between items-start">
+                <div className="flex flex-row justify-between items-Qstart">
                     <p className="text-3xl font-semibold">Manage Products</p>
 
                     <div className="flex gap-4">
@@ -57,6 +86,8 @@ export default function Products() {
             <Modal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
+                product={product}
+                setProduct={setProduct}
             />
         </div>
     );

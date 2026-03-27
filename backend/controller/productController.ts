@@ -4,10 +4,22 @@ import productModel from "../model/productModel";
 //product controller
 const productController = {
     saveProduct: async (req: Request, res: Response) => {
-        const {product_name, product_description, price, stock, image, size, SKU } = req.body || {};
+        const {
+            product_name, 
+            product_description, 
+            price, 
+            stock, 
+            image, 
+            SKU, 
+            weight, 
+            size,
+            variants,
+            category_name,
+            brand 
+        } = req.body || {};
 
         //validate the fields first 
-        if (!product_name || !product_description || !price) {
+        if (!product_name || !product_description || !price || !stock || !SKU || !image) {
             return res.status(400).json({
                 success: false,
                 msg: "Please provide all fields that needs for product"
@@ -34,7 +46,8 @@ const productController = {
             await productModel.saveProduct(
                 {
                     product_name, product_description, 
-                    price, stock, image, size, SKU
+                    price, stock, image, SKU, weight, 
+                    size, variants, category_name, brand
                 }
             )
 

@@ -6,8 +6,13 @@ interface productParams {
     price: number, 
     stock: number,
     image: string, 
-    size: string, 
-    SKU: string
+    SKU: string,
+    weight: number,
+    size: string,
+    variants: string,
+    category_name: string,
+    brand: string
+
 }
 
 const productModel = {
@@ -38,22 +43,41 @@ const productModel = {
     //save product to database
     saveProduct: async ({
         product_name, product_description, price, stock, 
-        image, size, SKU}: productParams ) => {
+        image, SKU, weight, size, variants, category_name, 
+        brand
+        }: productParams ) => {
 
-        const [row] = await db.query(`
+        const [category]: any = await db.query(`
+            SELECT * FROM product_categories WHERE category_name = ?
+        `, [category_name]);
+        
+        if (category.lenght === 0) {
+            throw new Error("Invalid category");
+        }
+
+
+        const categoryId = category[0].category_id;
+        
+        const [row]: any = await db.query(`
             INSERT INTO products (product_name, product_description, 
-            price, stock, image, size, SKU)
+            price, stock, image, SKU, weight, size, variants, brand, category_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
-            product_name, 
-            product_description,
-            price, stock, image, 
-            size, SKU
-        ]);
+                product_name, 
+                product_description,
+                price, stock, image, 
+                SKU, weight, size, 
+                variants, brand,
+                categoryId
+        ]); 
 
-        return row;
+        return {
+            product_id: row.insertId,
+            category_id: categoryId
+        }
     },
     
-    udpdateProduct: async({id}) => {
+    udpdateProduct: async() => {
         const [row] = await db.query(`
             UPDATE TABLE products
             SET product_name = ?, product_description = ?

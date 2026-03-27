@@ -1,9 +1,44 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Modal({ isOpen, setIsOpen, onClose, children }) {
     if (!isOpen) return null;
 
     const fileInputRef = useRef(null);
+    const [preview, setPreview] = useState(null);
+    const [product, setProduct] = useState({
+        product_name: '',
+        product_description: '',
+        price: 0,
+        stock: 0,
+        SKU: '',
+        weight: 0,
+        size: '',
+        variants: '',
+        category_name: '',
+        brand: '',
+        image: null
+    });
+
+    // Generic handler for text, number, select inputs
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProduct(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    // Handle file input
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProduct(prev => ({
+                ...prev,
+                image: file
+            }));
+            setPreview(URL.createObjectURL(file));
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -21,89 +56,108 @@ export default function Modal({ isOpen, setIsOpen, onClose, children }) {
                     >
                         <i className="fa-solid fa-xmark text-2xl"></i>
                 </button>
-                {/* Header */}
+
                 <div className="flex flex-col items-center justify-between mb-4 space-y-5 p-5">
-                    <div className="flex flex-row items-center justify-b"> 
-                        <h2 className="text-2xl font-bold text-gray-800">ADD PRODUCT</h2>
-                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800">ADD PRODUCT</h2>
 
-                    {/*Product name & header*/}
-                    <div className="flex flex-col mt-5">
-                        <div className="flex flex-row space-x-2.5">
+                    {/* Product inputs */}
+                    <div className="flex flex-col mt-5 space-y-5">
+                        <div className="flex space-x-2.5">
                             <div className="flex flex-col space-y-2">
-                                <label htmlFor="">Product name</label>
-                                <input type="text" 
-                                className="p-2 rounded-md border border-gray-400"
+                                <label>Product name</label>
+                                <input 
+                                    type="text"
+                                    name="product_name"
+                                    value={product.product_name}
+                                    onChange={handleChange}
+                                    className="p-2 rounded-md border border-gray-400"
                                 />
                             </div>
 
                             <div className="flex flex-col space-y-2">
-                                <label htmlFor="">Description</label>
-                                <input type="text" 
-                                className="p-2 rounded-md border border-gray-400"
-                                />
-                            </div>
-                        </div>
-
-                        {/*Product price & stock*/}
-                        <div className="flex flex-row mt-5 space-x-2.5">
-                            <div className="flex flex-col ">
-                                <label for="">price</label>
-                                <input type="text" 
-                                    className="p-2 rounded-md  border border-gray-400"
-                                />
-                            </div>
-
-                            <div className="flex flex-col">
-                                <label for="">stock</label>
-                                <input type="text" 
+                                <label>Description</label>
+                                <input 
+                                    type="text"
+                                    name="product_description"
+                                    value={product.product_description}
+                                    onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
                             </div>
                         </div>
 
-                        {/*Product SKU & size*/}
-                        <div className="flex flex-row mt-5 space-x-2.5">
-                            <div className="flex flex-col ">
-                                <label for="">SKU</label>
-                                <input type="text" 
-                                    className="p-2 rounded-md  border border-gray-400"
+                        <div className="flex space-x-2.5">
+                            <div className="flex flex-col">
+                                <label>Price</label>
+                                <input 
+                                    type="number"
+                                    name="price"
+                                    value={product.price}
+                                    onChange={handleChange}
+                                    className="p-2 rounded-md border border-gray-400"
                                 />
                             </div>
-
                             <div className="flex flex-col">
-                                <label for="">weight</label>
-                                <input type="number"
+                                <label>Stock</label>
+                                <input 
+                                    type="number"
+                                    name="stock"
+                                    value={product.stock}
+                                    onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
                             </div>
                         </div>
 
-                         {/*Product SIZE & VARIANTS*/}
-                        <div className="flex flex-row mt-5 space-x-2.5">
+                        <div className="flex space-x-2.5">
+                            <div className="flex flex-col">
+                                <label>SKU</label>
+                                <input 
+                                    type="text"
+                                    name="SKU"
+                                    value={product.SKU}
+                                    onChange={handleChange}
+                                    className="p-2 rounded-md border border-gray-400"
+                                />
+                            </div>
+                            <div className="flex flex-col">
+                                <label>Weight</label>
+                                <input 
+                                    type="number"
+                                    name="weight"
+                                    value={product.weight}
+                                    onChange={handleChange}
+                                    className="p-2 rounded-md border border-gray-400"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex space-x-2.5">
                             <div className="flex flex-col w-[50%]">
-                                <label for="">size(optional)</label>
-                                <select 
-                                    name="" id="w-full"
+                                <label>Size</label>
+                                <select
+                                    name="size"
+                                    value={product.size}
+                                    onChange={handleChange}
                                     className="p-2 w-full border rounded-md border-gray-400"
                                 >
                                     <option value="" disabled>Select size</option>
-                                    <option value="M">M</option>
                                     <option value="S">S</option>
+                                    <option value="M">M</option>
                                     <option value="L">L</option>
                                     <option value="XL">XL</option>
                                     <option value="XXL">XXL</option>
                                 </select>
                             </div>
-
                             <div className="flex flex-col w-[50%]">
-                                <label for="">variants</label>
+                                <label>Variants</label>
                                 <select
                                     name="variants"
+                                    value={product.variants}
+                                    onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
-                                    placeholder="Variants"
-                                >   
-                                    <option value="" disabled>Select Variant</option>
+                                >
+                                    <option value="" disabled>Select variant</option>
                                     <option value="Red">Red</option>
                                     <option value="White">White</option>
                                     <option value="Black">Black</option>
@@ -113,67 +167,82 @@ export default function Modal({ isOpen, setIsOpen, onClose, children }) {
                             </div>
                         </div>
 
-                        <div className="flex flex-row mt-5 space-x-2.5">
-                            <div className="flex flex-col w-[50%] space-y-2">
-                                <label for="">Category</label>
-                                <select className="p-2 rounded-md border border-gray-400">
-                                    <option value="" disabled>Product Category</option>
-                                    <option value="">Electronics</option>
-                                    <option value="">Fashion</option>
-                                    <option value="">Home & Living</option>
-                                    <option value="">Skin care</option>
-                                    <option value="">Toys</option>
-                                    <option value="">Apparel</option>
-                                    <option value="">Foods</option>
-                                    <option value="">Health * Fitness</option>
-                                    <option value="">Books</option>
-                                    <option value="">Pet Supplies</option>
+                        <div className="flex space-x-2.5">
+                            <div className="flex flex-col w-[50%]">
+                                <label>Category</label>
+                                <select
+                                    name="category_name"
+                                    value={product.category_name}
+                                    onChange={handleChange}
+                                    className="p-2 rounded-md border border-gray-400"
+                                >
+                                    <option value="" disabled>Select category</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Fashion">Fashion</option>
+                                    <option value="Home & Living">Home & Living</option>
+                                    <option value="Skin care">Skin care</option>
+                                    <option value="Toys">Toys</option>
+                                    <option value="Apparel">Apparel</option>
+                                    <option value="Foods">Foods</option>
+                                    <option value="Health & Fitness">Health & Fitness</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Pet Supplies">Pet Supplies</option>
                                 </select>
                             </div>
 
-                            <div className="flex flex-col space-y-2">
-                                <label for="">Brand</label>
+                            <div className="flex flex-col">
+                                <label>Brand</label>
                                 <input 
                                     type="text"
+                                    name="brand"
+                                    value={product.brand}
+                                    onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
                             </div>
                         </div>
 
-                        {/*Product image*/}
-                        <div className="w-full mt-2">
-                            <label for="">Image</label>
-
-                            <input type="file" 
-                                className="w-full h-30 border hidden"
+                        {/* Image */}
+                        <div className="flex flex-col mt-2">
+                            <label>Image</label>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                onChange={handleImageChange}
                             />
-
-                            {/* Custom Button */}
-                            <div
-                                onClick={() => fileInputRef.current.click()}
-                                className="flex flex-col items-center justify-center border-2 border-dashed h-32 rounded-lg cursor-pointer hover:bg-gray-100 transition  border border-gray-400"
-                            >
-                                <i className="fa-solid fa-image text-2xl mb-2"></i>
-                                <p className="text-sm text-gray-600">Click to upload image</p>
-                            </div>
+                            {preview ? (
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    className="mt-3 w-full h-40 object-cover rounded-md border"
+                                />
+                            ) : (
+                                <div
+                                    onClick={() => fileInputRef.current.click()}
+                                    className="flex flex-col items-center justify-center border-2 border-dashed h-32 rounded-lg cursor-pointer hover:bg-gray-100 transition border-gray-400"
+                                >
+                                    <i className="fa-solid fa-image text-2xl mb-2"></i>
+                                    <p className="text-sm text-gray-600">Click to upload image</p>
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    <div className="flex flex-row justify-center space-x-2 w-full mt-5">
-                        <button className="p-2 text-white bg-black rounded-md w-[40%] hover:scale-105 transition duration-200">Create</button>
+                    <div className="flex justify-center space-x-2 mt-5 w-full">
+                        <button className="p-2 text-white bg-black rounded-md w-[40%] hover:scale-105 transition duration-200">
+                            Create
+                        </button>
                         <button 
-                            className="p-2 text-black bg-white rounded-md w-[40%] border-1 hover:scale-105 transition duration-200"
+                            className="p-2 text-black bg-white rounded-md w-[40%] border hover:scale-105 transition duration-200"
                             onClick={() => setIsOpen(false)}
-                            >
-                                Cancel
+                        >
+                            Cancel
                         </button>
                     </div>
                 </div>
 
-                {/* Content */}
-                <div>
-                    {children}
-                </div>
+                {children}
             </div>
         </div>
     );
