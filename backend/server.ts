@@ -19,6 +19,7 @@ app.use(cors({
 
 console.log(db);
 
+app.use("/uploads", express.static("uploads"));
 app.use("/users", userRoutes);
 app.use("products", productRoutes);
 app.use("/shops", shopRoutes);

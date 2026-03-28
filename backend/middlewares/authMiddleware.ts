@@ -4,7 +4,7 @@ import { AuthRequest } from "../index.ts";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-export function verifyToken(
+export async function verifyToken(
     req: AuthRequest,
     res: Response,
     next: NextFunction

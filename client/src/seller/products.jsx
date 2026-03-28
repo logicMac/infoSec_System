@@ -6,7 +6,6 @@ import { addProduct } from "../api/productApi.js";
 export default function Products() {
     const[isOpen, setIsOpen] = useState(false);
     const[product, setProduct] = useState({});
-    const[userData, setUserData] = useState(null);
     const user = sessionStorage.getItem("user");
     const parsedUser = JSON.parse(user);
     
@@ -19,19 +18,18 @@ export default function Products() {
             return;
         }
 
-        setUserData(parsedUser);
-
         if (parsedUser.role !== 'seller') {
             console.log("You cannot add product");
             return
         }
+        const token = parsedUser.token;
         
         try {
-            const res = await addProduct(product, userData);
+            const res = await addProduct(product, token);
             console.log(res.msg);
         } catch (err) {
-            console.log("Cannot send data to API", err);
-        }
+            console.log("Cannot send data to API", err);        
+        }       
     }
 
     return(

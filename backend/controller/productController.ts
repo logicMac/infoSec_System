@@ -1,9 +1,10 @@
 import {Request, Response } from "express";
 import productModel from "../model/productModel";
+import { AuthRequest } from "../index";
 
 //product controller
 const productController = {
-    saveProduct: async (req: Request, res: Response) => {
+    saveProduct: async (req: AuthRequest, res: Response) => {
         const {
             product_name, 
             product_description, 
@@ -18,8 +19,20 @@ const productController = {
             brand 
         } = req.body || {};
 
+        const imagePath = req.file ? req.file.filename : null; 
+        const userId = req.user?.userId;
+
+    
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                msg: "Unauthorized: user not found",
+            });
+        }
+
         //validate the fields first 
-        if (!product_name || !product_description || !price || !stock || !SKU || !image) {
+        if (!product_name || !product_description || !price || !stock || !SKU || !imagePath) {
             return res.status(400).json({
                 success: false,
                 msg: "Please provide all fields that needs for product"
@@ -46,8 +59,8 @@ const productController = {
             await productModel.saveProduct(
                 {
                     product_name, product_description, 
-                    price, stock, image, SKU, weight, 
-                    size, variants, category_name, brand
+                    price, stock, image: imagePath, SKU, weight, 
+                    size, variants, category_name, brand, userId
                 }
             )
 

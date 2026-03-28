@@ -1,20 +1,7 @@
 import axios from "axios";
+import { addProductParams, userDataParams } from "../types/types";
 
-interface addProductParams {
-    product_name: string,
-    product_description: string,
-    price: number,
-    stock: number,
-    SKU: string,
-    weight: number,
-    size: string,
-    variants: string,
-    category_name: string,
-    brand: string,
-    image: null
-}
-
-export async function addProduct(productData:addProductParams) {
+export async function addProduct(productData:addProductParams, userData: userDataParams) {
     if (!productData) {
         console.log("Api error plase try again");
         return;
@@ -22,7 +9,13 @@ export async function addProduct(productData:addProductParams) {
     
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/products/saveProduct`, 
-            productData
+            productData,
+            {
+                headers: {
+                    Authorization: `Bearer ${userData.token}`,
+                    "Content-Type" : "application/json",
+                },
+            }
         )
         
         const data = res.data;

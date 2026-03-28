@@ -11,8 +11,8 @@ interface productParams {
     size: string,
     variants: string,
     category_name: string,
-    brand: string
-
+    brand: string,
+    userId: number
 }
 
 const productModel = {
@@ -44,31 +44,30 @@ const productModel = {
     saveProduct: async ({
         product_name, product_description, price, stock, 
         image, SKU, weight, size, variants, category_name, 
-        brand
+        brand, userId
         }: productParams ) => {
 
         const [category]: any = await db.query(`
             SELECT * FROM product_categories WHERE category_name = ?
         `, [category_name]);
         
-        if (category.lenght === 0) {
+        if (category.length === 0) {
             throw new Error("Invalid category");
         }
-
-
+        
         const categoryId = category[0].category_id;
         
         const [row]: any = await db.query(`
             INSERT INTO products (product_name, product_description, 
-            price, stock, image, SKU, weight, size, variants, brand, category_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            price, stock, image, SKU, weight, size, variants, brand, category_id, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
                 product_name, 
                 product_description,
                 price, stock, image, 
                 SKU, weight, size, 
                 variants, brand,
-                categoryId
+                categoryId, userId
         ]); 
 
         return {
