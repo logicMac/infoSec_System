@@ -1,23 +1,10 @@
 import { useRef, useState } from "react";
 
-export default function Modal({ isOpen, setIsOpen, onClose, children }) {
+export default function Modal({ isOpen, setIsOpen, onClose, children, handleAddProduct, setProduct, product, error }) {
     if (!isOpen) return null;
 
     const fileInputRef = useRef(null);
     const [preview, setPreview] = useState(null);
-    const [product, setProduct] = useState({
-        product_name: '',
-        product_description: '',
-        price: 0,
-        stock: 0,
-        SKU: '',
-        weight: 0,
-        size: '',
-        variants: '',
-        category_name: '',
-        brand: '',
-        image: null
-    });
 
     // Generic handler for text, number, select inputs
     const handleChange = (e) => {
@@ -49,7 +36,9 @@ export default function Modal({ isOpen, setIsOpen, onClose, children }) {
             ></div>
 
             {/* Modal */}
-            <div className="relative bg-white rounded-lg shadow-lg p-6 z-10">
+            <form 
+                onSubmit={handleAddProduct}
+                className="relative bg-white rounded-lg shadow-lg p-6 z-10">
                 <button
                     onClick={() => setIsOpen(false)}
                     className="text-gray-400 hover:text-gray-600"
@@ -58,7 +47,10 @@ export default function Modal({ isOpen, setIsOpen, onClose, children }) {
                 </button>
 
                 <div className="flex flex-col items-center justify-between mb-4 space-y-5 p-5">
-                    <h2 className="text-2xl font-bold text-gray-800">ADD PRODUCT</h2>
+                    <div className="flex flex-col justify-center items-center">
+                        <h2 className="text-2xl font-bold text-gray-800">ADD PRODUCT</h2>
+                        <p className="text-red-500">{error}</p>
+                    </div>
 
                     {/* Product inputs */}
                     <div className="flex flex-col mt-5 space-y-5">
@@ -230,10 +222,14 @@ export default function Modal({ isOpen, setIsOpen, onClose, children }) {
                     </div>
 
                     <div className="flex justify-center space-x-2 mt-5 w-full">
-                        <button className="p-2 text-white bg-black rounded-md w-[40%] hover:scale-105 transition duration-200">
+                        <button 
+                            type="submit"
+                            className="p-2 text-white bg-black rounded-md w-[40%] hover:scale-105 transition duration-200"
+                        >
                             Create
                         </button>
                         <button 
+                            type="button"
                             className="p-2 text-black bg-white rounded-md w-[40%] border hover:scale-105 transition duration-200"
                             onClick={() => setIsOpen(false)}
                         >
@@ -243,7 +239,7 @@ export default function Modal({ isOpen, setIsOpen, onClose, children }) {
                 </div>
 
                 {children}
-            </div>
+            </form>
         </div>
     );
 }

@@ -1,9 +1,14 @@
 import axios from "axios";
 import { addProductParams, userDataParams } from "../types/types";
 
-export async function addProduct(productData:addProductParams, userData: userDataParams) {
+export async function addProduct(productData:addProductParams, token: string) {
     if (!productData) {
         console.log("Api error plase try again");
+        return;
+    }
+
+    if (!token) {
+        console.log("No token provided");
         return;
     }
     
@@ -12,8 +17,7 @@ export async function addProduct(productData:addProductParams, userData: userDat
             productData,
             {
                 headers: {
-                    Authorization: `Bearer ${userData.token}`,
-                    "Content-Type" : "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
             }
         )

@@ -5,11 +5,24 @@ import { addProduct } from "../api/productApi.js";
 
 export default function Products() {
     const[isOpen, setIsOpen] = useState(false);
-    const[product, setProduct] = useState({});
+    const[error, setError] = useState('');
+    const [product, setProduct] = useState({
+        product_name: '',
+        product_description: '',
+        price: 0,
+        stock: 0,
+        SKU: '',
+        weight: 0,
+        size: '',
+        variants: '',
+        category_name: '',
+        brand: '',
+        image: null
+    });
+    const token = sessionStorage.getItem("token");
     const user = sessionStorage.getItem("user");
-    const parsedUser = JSON.parse(user);
+    const parsedUser = user ? JSON.parse(user) : null;
     
-
     const handleAddProduct = async (e) => {
         e.preventDefault();
 
@@ -18,15 +31,49 @@ export default function Products() {
             return;
         }
 
-        if (parsedUser.role !== 'seller') {
+        if (!token) {
+            console.log("No token attached");
+            return;
+        }
+
+        if (parsedUser && parsedUser.role !== 'seller') {
             console.log("You cannot add product");
             return
         }
-        const token = parsedUser.token;
+
+        // Create FormData for file upload
+        const formData = new FormData();
+        for (let key in product) {
+            const value = product[key];
+            if (value !== null) {
+                formData.append(key, value);
+            }
+        }
         
         try {
-            const res = await addProduct(product, token);
+            const res = await addProduct(formData, token);
             console.log(res.msg);
+            if (res.ok) {
+                setIsOpen(false);
+                // Reset form
+                setProduct({
+                    product_name: '',
+                    product_description: '',
+                    price: 0,
+                    stock: 0,
+                    SKU: '',
+                    weight: 0,
+                    size: '',
+                    variants: '',
+                    category_name: '',
+                    brand: '',
+                    image: null
+                });
+            }
+
+            if (!res.ok) {
+                setError(res.msg);
+            }
         } catch (err) {
             console.log("Cannot send data to API", err);        
         }       
@@ -86,6 +133,8 @@ export default function Products() {
                 setIsOpen={setIsOpen}
                 product={product}
                 setProduct={setProduct}
+                handleAddProduct={handleAddProduct}
+                error={error}
             />
         </div>
     );

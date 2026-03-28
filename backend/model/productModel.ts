@@ -17,8 +17,14 @@ interface productParams {
 
 const productModel = {
     //fetch all product
-    getAllProduct: async () => {
-        const [row] = `SELECT * FROM products WHERE product_id`;
+    getAllProduct: async() => {
+        const [row] = await db.query(`
+            SELECT p.products
+            FROM products p
+            INNER JOIN product_categories pc ON p.category_id = pc.category_id
+            WHERE p.status = "Available";
+        `);
+
         return row;
     },
 
@@ -51,11 +57,8 @@ const productModel = {
             SELECT * FROM product_categories WHERE category_name = ?
         `, [category_name]);
         
-        if (category.length === 0) {
-            throw new Error("Invalid category");
-        }
         
-        const categoryId = category[0].category_id;
+        const categoryId = category[0];
         
         const [row]: any = await db.query(`
             INSERT INTO products (product_name, product_description, 

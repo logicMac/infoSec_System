@@ -18,7 +18,7 @@ export async function verifyToken(
     const token = authHeader.split(" ")[1];
 
     try {
-        const decoded = jwt.verify(token as string, JWT_SECRET) as { userId: number };
+        const decoded = jwt.verify(token as string, JWT_SECRET) as { id: number, username: string, role: string };
 
         req.user = decoded;
 

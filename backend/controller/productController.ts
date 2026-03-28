@@ -20,9 +20,7 @@ const productController = {
         } = req.body || {};
 
         const imagePath = req.file ? req.file.filename : null; 
-        const userId = req.user?.userId;
-
-    
+        const userId = req.user?.id;
 
         if (!userId) {
             return res.status(401).json({

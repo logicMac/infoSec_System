@@ -88,7 +88,8 @@ export default function OtpPage() {
             sessionStorage.setItem("user", JSON.stringify({
                 username: userData.username,
                 role: userData.role,
-                user_id: userData.user_id
+                user_id: userData.user_id,
+                token: res.data.token
             }));
 
             // Redirect based on role
