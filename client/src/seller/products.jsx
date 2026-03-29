@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NavBar from "./nav";
 import Modal from "../modals/Modal.jsx";
 import { addProduct, getAllProduct } from "../api/productApi.js";
+import { getAuthData } from "../utils/authGetter.js";
 
 export default function Products() {
     const[isOpen, setIsOpen] = useState(false);
@@ -20,9 +21,7 @@ export default function Products() {
         brand: '',
         image: null
     });
-    const token = sessionStorage.getItem("token");
-    const user = sessionStorage.getItem("user");
-    const parsedUser = user ? JSON.parse(user) : null;
+    const {token} = getAuthData();
 
     useEffect(() => {
         const fetchData = async () => {
