@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./nav";
 import Modal from "../modals/Modal.jsx";
-import { addProduct } from "../api/productApi.js";
+import { addProduct, getAllProduct } from "../api/productApi.js";
 
 export default function Products() {
     const[isOpen, setIsOpen] = useState(false);
     const[error, setError] = useState('');
+    const[data, setData] = useState([]);
     const [product, setProduct] = useState({
         product_name: '',
         product_description: '',
@@ -22,6 +23,29 @@ export default function Products() {
     const token = sessionStorage.getItem("token");
     const user = sessionStorage.getItem("user");
     const parsedUser = user ? JSON.parse(user) : null;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await getAllProduct();
+                console.log("API Response:", res);
+            
+                if (res.ok) {
+                    console.log("Products data:", res.data);
+                    setData(res.data);
+                } else {
+                    console.log("Error:", res.msg);
+                    setError(res.msg);
+                }
+
+            } catch (err) {
+                console.error("Fetch error:", err);
+                setError("Something went wrong");
+            }
+        };
+
+        fetchData();
+    }, [])
     
     const handleAddProduct = async (e) => {
         e.preventDefault();
@@ -112,18 +136,22 @@ export default function Products() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="text-center border-b border-gray-300">
-                            <td className="px-4 py-4">Mac</td>
-                            <td className="px-4 py-4">Dumas</td>
-                            <td className="px-4 py-4">ates</td>   
-                            <td className="px-4 py-4"></td>
-                            <td className="px-4 py-4"></td>
-                            <td className="px-4 py-4 gap-4">
-                                <i className="fas fa-eye text-blue-500 hover:text-blue-700 cursor-pointer mx-1"></i>
-                                <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"></i>
-                                <i className="fas fa-trash text-red-500 hover:text-red-700 cursor-pointer mx-1"></i>
-                            </td>
-                        </tr>
+                        {data.map((product) => (
+                            <tr 
+                                key={product.product_id}
+                                className="text-center border-b border-gray-300">
+                                <td className="px-4 py-4 text-black">{product.product_id}</td>
+                                <td className="px-4 py-4">{product.product_name}</td>
+                                <td className="px-4 py-4">${product.price}</td>   
+                                <td className="px-4 py-4">{product.stock}</td>
+                                <td className="px-4 py-4">{product.category_name}</td>
+                                <td className="px-4 py-4 gap-4">
+                                    <i className="fas fa-eye text-blue-500 hover:text-blue-700 cursor-pointer mx-1"></i>
+                                    <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"></i>
+                                    <i className="fas fa-trash text-red-500 hover:text-red-700 cursor-pointer mx-1"></i>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

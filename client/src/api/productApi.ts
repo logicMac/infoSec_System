@@ -79,3 +79,32 @@ export async function deleteProduct(id: number) {
         }
     }
 }
+
+export async function getAllProduct() {
+    try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/products/getProducts`);
+
+        const data = res.data;
+        console.log("Backend response:", data);
+
+        if (!data.success) {
+            return {
+                ok: false,
+                msg: data.msg || "Error Fetching products"
+            }
+        }
+
+        return {
+            ok: true,
+            msg: data.msg || "Products Fetched",
+            data: data.products
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+
+        return {
+            ok: false,
+            msg: "Cannot fetch data from backend"
+        };
+    }
+}

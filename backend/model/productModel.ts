@@ -19,10 +19,10 @@ const productModel = {
     //fetch all product
     getAllProduct: async() => {
         const [row] = await db.query(`
-            SELECT p.products
-            FROM products p
+            SELECT *
+            FROM products p 
             INNER JOIN product_categories pc ON p.category_id = pc.category_id
-            WHERE p.status = "Available";
+            WHERE p.status = "Active"
         `);
 
         return row;
@@ -53,30 +53,30 @@ const productModel = {
         brand, userId
         }: productParams ) => {
 
+        // Get category_id from category_name
         const [category]: any = await db.query(`
-            SELECT * FROM product_categories WHERE category_name = ?
+            INSERT INTO product_categories (category_name) VALUES (?)
         `, [category_name]);
         
-        
-        const categoryId = category[0];
+        const categoryId = category.insertId;
         
         const [row]: any = await db.query(`
             INSERT INTO products (product_name, product_description, 
-            price, stock, image, SKU, weight, size, variants, brand, category_id, user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            price, stock, image, SKU, weight, size, variants, brand, category_id, user_id, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
                 product_name, 
                 product_description,
                 price, stock, image, 
                 SKU, weight, size, 
                 variants, brand,
-                categoryId, userId
+                categoryId, userId, "Active"
         ]); 
 
         return {
             product_id: row.insertId,
             category_id: categoryId
-        }
+        };
     },
     
     udpdateProduct: async() => {

@@ -79,7 +79,6 @@ const productController = {
         }
     },
     
-
     deleteProduct: async(req: Request, res: Response) => {
         const {product_id} = req.body.params || {};
 
@@ -112,7 +111,25 @@ const productController = {
                 msg: "Internal Server Error" 
             })
         }
-    } 
+    },
+    
+    getProducts: async(req: Request, res: Response) => {
+        try {
+            const products = await productModel.getAllProduct();
+            
+            res.status(200).json({
+                success: true, 
+                msg: "Products fetched successfully",
+                products
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                success: false, 
+                msg: "Internal Server Error"
+            });
+        }
+    }
 }
 
 export default productController;
