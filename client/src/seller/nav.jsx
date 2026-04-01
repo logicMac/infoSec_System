@@ -25,14 +25,14 @@ export default function NavBar() {
                             <Link to='/seller/products'>Products</Link>
                             <Link>Shop</Link>
                             <Link>Orders</Link>
-
-                            <button 
-                                className="bg-black rounded-md p-2 text-white w-40"
-                                onClick={handleLogout}
-                                >
-                                    Logout
-                            </button>
                         </div>
+
+                        <button 
+                            className="bg-black rounded-md p-2 text-white w-40 hover:scale-105 transition duration-200"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
                     </div>
             </header>
     );

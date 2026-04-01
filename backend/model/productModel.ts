@@ -1,4 +1,6 @@
+import { asyncWrapProviders } from "async_hooks";
 import db from "../db.ts";
+import { totalProductParams } from "../types/types.ts";
 
 interface productParams {
     product_name: string,
@@ -88,6 +90,14 @@ const productModel = {
         `);
 
         return row;
+    },
+
+    getAllProductQuantity: async () => {
+        const [row]: any = await db.query(`
+            SELECT COUNT(*) AS total FROM products
+        `);
+
+        return row[0].total;
     }
 }
 

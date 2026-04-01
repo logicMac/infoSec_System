@@ -9,6 +9,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json()); 
+app.use("/uploads", express.static("uploads"));
 
 app.use(cors({
     origin: "http://localhost:5173",
@@ -19,7 +20,7 @@ app.use(cors({
 
 console.log(db);
 
-app.use("/uploads", express.static("uploads"));
+
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/shops", shopRoutes);

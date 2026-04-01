@@ -21,7 +21,7 @@ export default function Products() {
         brand: '',
         image: null
     });
-    const {token} = getAuthData();
+    const {token, user, parsedUser} = getAuthData();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -113,7 +113,7 @@ export default function Products() {
 
                     <div className="flex gap-4">
                         <button 
-                            className="p-2 bg-black rounded-md text-white w-40"
+                            className="p-2 bg-black rounded-md text-white w-40 hover:scale-105 transiton duration-200"
                             onClick={() => {setIsOpen(true)}}
                             >
                                 Add Product
@@ -139,7 +139,9 @@ export default function Products() {
                             <tr 
                                 key={product.product_id}
                                 className="text-center border-b border-gray-300">
-                                <td className="px-4 py-4 text-black">{product.product_id}</td>
+                                <div className="flex items-center justify-center w-20">
+                                    <img className="object-cover" src={`http://localhost:3000/uploads/${product.image}`} />
+                                </div>
                                 <td className="px-4 py-4">{product.product_name}</td>
                                 <td className="px-4 py-4">${product.price}</td>   
                                 <td className="px-4 py-4">{product.stock}</td>
