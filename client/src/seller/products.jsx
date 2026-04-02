@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import NavBar from "./nav";
 import Modal from "../modals/Modal.jsx";
-import { addProduct, getAllProduct } from "../api/productApi.js";
+import DeleteModal from "../modals/ReusableModal.jsx";
+import { addProduct, getAllProduct, deleteProduct } from "../api/productApi.js";
 import { getAuthData } from "../utils/authGetter.js";
 
 export default function Products() {
     const[isOpen, setIsOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const[error, setError] = useState('');
     const[data, setData] = useState([]);
+    const[selectedId, setSelectedId] = useState('');
     const [product, setProduct] = useState({
         product_name: '',
         product_description: '',
@@ -81,9 +84,6 @@ export default function Products() {
                 setData(prev => [
                     ...prev, res.data
                 ]);
-            }
-
-            if (res.ok) {
                 setIsOpen(false);
                 // Reset form
                 setProduct({
@@ -107,6 +107,20 @@ export default function Products() {
         } catch (err) {
             console.log("Cannot send data to API", err);        
         }       
+    }
+
+    const handleDelete = async () => {
+        try {
+            const res = await deleteProduct(token, selectedId);
+            
+            console.log(res);
+
+            if (!res.ok) {
+                console.log("Error occured");
+            }
+        } catch (error) {
+            console.log("Cannot send data to backend ", error);
+        }
     }
 
     return(
@@ -156,7 +170,13 @@ export default function Products() {
                                 <td className="px-4 py-4 gap-4">
                                     <i className="fas fa-eye text-blue-500 hover:text-blue-700 cursor-pointer mx-1"></i>
                                     <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"></i>
-                                    <i className="fas fa-trash text-red-500 hover:text-red-700 cursor-pointer mx-1"></i>
+                                    <i className="fas fa-trash text-red-500 hover:text-red-700 cursor-pointer mx-1"
+                                        onClick={() => {
+                                            setSelectedId(product.product_id);
+                                            setIsDeleteOpen(true)
+                                        }}
+                                    >
+                                    </i>
                                 </td>
                             </tr>
                         ))}
@@ -172,6 +192,14 @@ export default function Products() {
                 handleAddProduct={handleAddProduct}
                 error={error}
             />
+
+            <DeleteModal 
+                isDeleteOpen={isDeleteOpen}
+                setIsDeleteOpen={setIsDeleteOpen}
+                handleDelete={handleDelete}
+            >
+                
+            </DeleteModal>
         </div>
     );
 }

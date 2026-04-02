@@ -243,3 +243,4 @@ export default function Modal({ isOpen, setIsOpen, onClose, children, handleAddP
         </div>
     );
 }
+

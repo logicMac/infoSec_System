@@ -46,7 +46,7 @@ export async function addProduct(productData:addProductParams, token: string) {
     }
 }
 
-export async function deleteProduct(id: number) {
+export async function deleteProduct(token: string, id: number) {
     if (!id) {
         return {
             ok: false,
@@ -55,7 +55,13 @@ export async function deleteProduct(id: number) {
     }
 
     try {
-        const res = await axios.delete(`${import.meta.env.VITE_API_URL}/products/deletProduct/${id}`)
+        const res = await axios.delete(`${import.meta.env.VITE_API_URL}/products/deleteProduct/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        )
         
         const data = res.data;
 
