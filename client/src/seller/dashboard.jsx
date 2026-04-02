@@ -39,7 +39,7 @@ export default function SellerDashboard() {
                 <div className="flex flex-row justify-center space-x-5 m-10 h-40">
                     <div className="bg-white w-140 rounded-md">
                         <h1>Total Products</h1>
-
+                        <p></p>
                         <div>
                             <i class="fa-solid fa-cube"></i>
                         </div>

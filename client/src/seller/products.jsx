@@ -21,7 +21,7 @@ export default function Products() {
         brand: '',
         image: null
     });
-    const {token, user, parsedUser} = getAuthData();
+    const {token, parsedUser} = getAuthData();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -76,6 +76,13 @@ export default function Products() {
         try {
             const res = await addProduct(formData, token);
             console.log(res.msg);
+
+            if (res.ok) {
+                setData(prev => [
+                    ...prev, res.data
+                ]);
+            }
+
             if (res.ok) {
                 setIsOpen(false);
                 // Reset form

@@ -5,3 +5,4 @@ export const getAuthData = () => {
     
     return { token, user: parsedUser };
 };
+    
