@@ -60,24 +60,37 @@ export default function LoginPage() {
                 className="flex flex-col w-full justify-center items-center "
                 onSubmit={handleLogin}
             >
-                <div className="flex flex-col justify-center items-center w-full">
-                    <input      
-                        type="text"
-                        placeholder="Username"
-                        className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
-                        onChange={(e) =>
-                        setLoginData({ ...loginData, username: e.target.value })
-                    }
-                    />
+                <div className="flex flex-col w-3/4">
+                    <label htmlFor="Username">Username</label>
+                    <div className="relative">
+                        {/* Icon */}
+                        <i className="fa fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-center"></i>
 
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
-                        onChange={(e) =>
-                            setLoginData({ ...loginData, password: e.target.value })
-                        }
-                    />
+                        {/* Input */}
+                        <input      
+                            type="text"
+                            placeholder="Username"
+                            className="mb-4 p-2 pl-10 border border-gray-400 rounded-md w-full"
+                            onChange={(e) =>
+                                setLoginData({ ...loginData, username: e.target.value })
+                            }
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col w-3/4">
+                    <label htmlFor="password">Password</label>
+                    <div className="relative">
+                        <i className="fa fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-center"></i>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="mb-4 p-2 border pl-10 border-gray-400 rounded-md w-full"   
+                            onChange={(e) =>
+                                setLoginData({ ...loginData, password: e.target.value })
+                            }
+                        />
+                    </div>
                 </div>
                 
                 <div className="flex flex-col w-full justify-center items-center gap-y-4">

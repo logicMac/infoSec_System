@@ -66,61 +66,79 @@ export default function RegisterPage() {
                 className="flex flex-col w-full justify-center items-center"
                 onSubmit={handleRegister}
             >
-                <input      
+                <div className="flex flex-col w-3/4">
+                    <label for="">Username</label>
+                    <input      
                     type="text"
                     placeholder="Username"
-                    className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
+                    className="mb-4  p-2 border border-gray-400 rounded-md"
                     onChange={(e) =>
                         setRegisterData({ ...registerData, username: e.target.value })
                     }
-                />
+                    />
+                </div>
 
-                <input
+               <div className="flex flex-col w-3/4">
+                 <label htmlFor="">Password</label>
+                 <input
                     type="password"
                     placeholder="Password"
-                    className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
+                    className="mb-4 p-2 border border-gray-400 rounded-md"
                     onChange={(e) =>
                         setRegisterData({ ...registerData, password: e.target.value })
                     }
                 />
+               </div>
 
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
-                    onChange={(e) =>
-                        setRegisterData({ ...registerData, confirm_Password: e.target.value })
-                    }
-                />
+                <div className="flex flex-col w-3/4">
+                    <label htmlFor="Confirm Password">Confirm Password</label>
+                    <input
+                        type="password"
+                        placeholder="Confirm Password"
+                        className="mb-4 p-2 border border-gray-400 rounded-md"
+                        onChange={(e) =>
+                            setRegisterData({ ...registerData, confirm_Password: e.target.value })
+                        }
+                    />
+                </div>
 
-                <input
-                    type="text"
-                    placeholder="Phone number"
-                    className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
-                    onChange={(e) =>
-                        setRegisterData({ ...registerData, phone_Number: e.target.value })
-                    }
-                />
+                <div className="flex flex-col w-3/4">
+                    <label htmlFor="Phone Number">Phone Number</label>
+                    <input
+                        type="text"
+                        placeholder="Phone number"
+                        className="mb-4 p-2 border border-gray-400 rounded-md"
+                        onChange={(e) =>
+                            setRegisterData({ ...registerData, phone_Number: e.target.value })
+                        }
+                    />
+                </div>
 
-                <input
-                    type="mail"
-                    placeholder="Email"
-                    className="mb-4 w-3/4 p-2 border border-gray-400 rounded-md"
-                    onChange={(e) =>
-                        setRegisterData({ ...registerData, email: e.target.value })
-                    }
-                />
+                <div className="flex flex-col w-3/4">
+                    <label htmlFor="Email">Email</label>
+                    <input
+                        type="mail"
+                        placeholder="Email"
+                        className="mb-4 p-2 border border-gray-400 rounded-md"
+                        onChange={(e) =>
+                            setRegisterData({ ...registerData, email: e.target.value })
+                        }
+                    />
+                </div>
 
-                <select 
-                    onChange={(e) => setRegisterData({...registerData, role: e.target.value})}
-                    className="p-2 border border-gray-400 w-80 rounded-md" 
-                    name="role"
-                >role
-                    <option value="customer">customer</option>
-                    <option value="staff">staff</option>
-                    <option value="seller">seller</option>
-                    <option value="admin">admin</option>
-                </select>
+                <div className="flex flex-col w-3/4">
+                    <label htmlFor="role">Role</label>
+                    <select 
+                        onChange={(e) => setRegisterData({...registerData, role: e.target.value})}
+                        className="p-2 border border-gray-400 rounded-md" 
+                        name="role"
+                    >role
+                        <option value="customer">customer</option>
+                        <option value="staff">staff</option>
+                        <option value="seller">seller</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </div>
 
                 <div className="flex flex-col justify-center items-center mt-10 w-full gap-y-4">
                     <button 

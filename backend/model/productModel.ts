@@ -85,8 +85,8 @@ const productModel = {
         const [row] = await db.query(`
             UPDATE TABLE products
             SET product_name = ?, product_description = ?
-            price = ?, stock = ?, image = ?, size = ? SKU = ?
-            WHERE product_id = ?
+            price = ?, stock = ?, weight = ?, size = ?,
+            variants = ?, brand = ?, status = ?
         `);
 
         return row;

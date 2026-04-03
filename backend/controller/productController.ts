@@ -80,7 +80,7 @@ const productController = {
     },
     
     deleteProduct: async(req: Request, res: Response) => {
-        const {product_id} = req.body.params || {};
+        const product_id: any = req.params.id;
 
         if(!product_id) {
             return res.status(400).json({
@@ -90,10 +90,9 @@ const productController = {
         }
 
         try {
-            const deleteById: any = await productModel.deleteProductById(product_id);
-            const deleted = deleteById[0];
+            const result: any = await productModel.deleteProductById(product_id);
 
-            if (!deleted && deleted.length > 0) { 
+            if (!result && result.affectedRows === 0) { 
                 return res.status(400).json({
                     success: false,
                     msg: "Product not found"
@@ -112,7 +111,24 @@ const productController = {
             })
         }
     },
-    
+
+    updateProduct: async(req: Request, res: Response) => {
+        const {
+            product_name, product_description, 
+            price, stock, image: imagePath, SKU, weight, size, 
+            variants, category_name, brand
+        } = req.body || {};
+
+        try {
+            const updateProduct = await productModel.udpdateProduct();    
+        } catch (err) {
+            res.status(500).json({
+                success: false,
+                msg: "Internal Server Error"
+            });
+        }
+    },
+
     getProducts: async(req: Request, res: Response) => {
         try {
             const products = await productModel.getAllProduct();

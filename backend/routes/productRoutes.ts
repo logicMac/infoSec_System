@@ -7,8 +7,10 @@ const router = express.Router();
 
 //routes for product controller
 router.post("/saveProduct", verifyToken, upload.single("image"),productController.saveProduct)
-router.delete("/deleteProduct", verifyToken, productController.deleteProduct)
+router.delete("/deleteProduct/:id", verifyToken, productController.deleteProduct)
 router.get("/getProducts", productController.getProducts)
 
 //export route
 export default router;
+
+

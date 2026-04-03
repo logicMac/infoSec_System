@@ -109,9 +109,14 @@ export default function Products() {
         }       
     }
 
-    const handleDelete = async () => {
+    const handleDelete = async () => {  
         try {
             const res = await deleteProduct(token, selectedId);
+
+            if (!res.ok) {
+                    setData(prev => prev.filter(data => data.product_id !== selectedId)
+                );
+            }
             
             console.log(res);
 
