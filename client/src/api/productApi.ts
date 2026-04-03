@@ -57,8 +57,8 @@ export async function deleteProduct(token: string, id: number) {
     try {
         const res = await axios.delete(`${import.meta.env.VITE_API_URL}/products/deleteProduct/${id}`,
             {
-                headers: {
-                    Authorization: `Bearer ${token}`,
+                headers: {      
+                    Authorization:  `Bearer ${token}`,
                 }
             }
         )
@@ -86,7 +86,7 @@ export async function deleteProduct(token: string, id: number) {
     }
 }
 
-export async function updateProduct(productData: string, token: string) {
+export async function updateProduct(productData: string, id: number, token: string) {
     if(!token || token === undefined) {
         return {
             ok: false,
@@ -95,11 +95,11 @@ export async function updateProduct(productData: string, token: string) {
     }
 
     try {
-        const res = await axios.put(`${import.meta.env.VITE_API_URL}/products/updateProduct`, 
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/products/updateProduct/${id}`, 
             productData,
             {
                 headers: {
-                    Authorization: `Bearer${token}`
+                    Authorization: `Bearer ${token}`
                 }
             }
         )
@@ -109,8 +109,13 @@ export async function updateProduct(productData: string, token: string) {
         if (!data.ok) {
             return {
                 ok: false,
-                msg: "Failed "
+                msg: data.msg
             }
+        }
+
+        return {
+            ok: true,
+            msg: "Product Updated Successfully",
         }
 
     } catch (error) {

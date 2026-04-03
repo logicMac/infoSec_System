@@ -135,7 +135,7 @@ export default function Products() {
 
     const handleUpdateProduct = async() => {
         try {
-            const res = await updateProduct(updateProduct, token);
+            const res = await updateProduct(updateProduct, selectedId, token);
 
             if (!res.ok) {
                 setError(res.msg);
@@ -204,9 +204,9 @@ export default function Products() {
                             <tr 
                                 key={product.product_id}
                                 className="text-center border-b border-gray-300">
-                                <div className="flex items-center justify-center w-20">
+                                <td className="flex items-center justify-center w-20">
                                     <img className="object-cover" src={`http://localhost:3000/uploads/${product.image}`} />
-                                </div>
+                                </td>
                                 <td className="px-4 py-4">{product.product_name}</td>
                                 <td className="px-4 py-4">${product.price}</td>   
                                 <td className="px-4 py-4">{product.stock}</td>
@@ -216,6 +216,7 @@ export default function Products() {
 
                                     <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"
                                         onClick={() => {
+                                            setSelectedId(product.product_id);
                                             setUpdateProduct({
                                                 product_name: product.product_id,
                                                 product_description: product.product_description,
@@ -265,8 +266,11 @@ export default function Products() {
                 handleDelete={handleDelete}
             />
                 
-            <UpdateProductModal
+            <UpdateProductModal 
+                error={error}
                 isUpdateOpen={isUpdateOpen}
+                setIsUpdateOpen={setIsUpdateOpen}
+                updateProduct={updateProduct}
                 setUpdateProduct={setUpdateProduct}
                 handleUpdateProduct={handleUpdateProduct}
             />

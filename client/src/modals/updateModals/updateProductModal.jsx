@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, setUpdateProduct}) {
+export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, updateProduct, setUpdateProduct, setIsUpdateOpen, error}) {
     if (!isUpdateOpen) return null;
+    
+    const fileInputRef = useRef(null);
+    const [preview, setPreview] = useState(null);
+    
+    useEffect(() => {
+        if (updateProduct?.image) {
+            setPreview(
+                `http://localhost:3000/uploads/${updateProduct.image}`
+            );
+        }
+    }, [updateProduct]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -11,12 +22,24 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
         }));
     }
 
+    // Handle file input
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProduct(prev => ({
+                ...prev,
+                image: file
+            }));
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Backdrop */}
             <div 
                 className="fixed inset-0 bg-transparent bg-opacity-50 shadow-lg"
-                onClick={onClose}
+                
             ></div>
 
             {/* Modal */}
@@ -44,7 +67,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="text"
                                     name="product_name"
-                                    value={product.product_name}
+                                    value={updateProduct.product_name}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -55,7 +78,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="text"
                                     name="product_description"
-                                    value={product.product_description}
+                                    value={updateProduct.product_description}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -68,7 +91,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="number"
                                     name="price"
-                                    value={product.price}
+                                    value={updateProduct.price}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -78,7 +101,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="number"
                                     name="stock"
-                                    value={product.stock}
+                                    value={updateProduct.stock}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -91,7 +114,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="text"
                                     name="SKU"
-                                    value={product.SKU}
+                                    value={updateProduct.SKU}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -101,7 +124,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="number"
                                     name="weight"
-                                    value={product.weight}
+                                    value={updateProduct.weight}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -113,7 +136,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <label>Size</label>
                                 <select
                                     name="size"
-                                    value={product.size}
+                                    value={updateProduct.size}
                                     onChange={handleChange}
                                     className="p-2 w-full border rounded-md border-gray-400"
                                 >
@@ -129,7 +152,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <label>Variants</label>
                                 <select
                                     name="variants"
-                                    value={product.variants}
+                                    value={updateProduct.variants}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 >
@@ -148,7 +171,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <label>Category</label>
                                 <select
                                     name="category_name"
-                                    value={product.category_name}
+                                    value={updateProduct.category_name}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 >
@@ -171,7 +194,7 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                                 <input 
                                     type="text"
                                     name="brand"
-                                    value={product.brand}
+                                    value={updateProduct.brand}
                                     onChange={handleChange}
                                     className="p-2 rounded-md border border-gray-400"
                                 />
@@ -210,19 +233,17 @@ export default function UpdateProductModal({isUpdateOpen, handleUpdateProduct, s
                             type="submit"
                             className="p-2 text-white bg-black rounded-md w-[40%] hover:scale-105 transition duration-200"
                         >
-                            Create
+                            Update
                         </button>
                         <button 
                             type="button"
                             className="p-2 text-black bg-white rounded-md w-[40%] border hover:scale-105 transition duration-200"
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => setIsUpdateOpen(false)}
                         >
                             Cancel
                         </button>
                     </div>
                 </div>
-
-                {children}
             </form>
         </div>
     );
