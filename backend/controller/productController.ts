@@ -56,9 +56,18 @@ const productController = {
             //pass product to the model 
             await productModel.saveProduct(
                 {
-                    product_name, product_description, 
-                    price, stock, image: imagePath, SKU, weight, 
-                    size, variants, category_name, brand, userId
+                    product_name, 
+                    product_description, 
+                    price,
+                    stock,
+                    image: imagePath, 
+                    SKU, 
+                    weight, 
+                    size, 
+                    variants, 
+                    category_name, 
+                    brand, 
+                    userId
                 }
             )
 
@@ -113,14 +122,43 @@ const productController = {
     },
 
     updateProduct: async(req: Request, res: Response) => {
+        const product_id = req.params.id;
         const {
-            product_name, product_description, 
-            price, stock, image: imagePath, SKU, weight, size, 
-            variants, category_name, brand
+            product_name, 
+            product_description, 
+            price,
+            stock,
+            SKU, 
+            weight, 
+            size, 
+            variants, 
+            category_name, 
+            brand
         } = req.body || {};
 
         try {
-            const updateProduct = await productModel.udpdateProduct();    
+            const imagePath = req.file ? req.file.filename : null;
+            const updateProduct: any = (
+                {
+                    product_name,
+                    product_description,
+                    price,
+                    stock,
+                    image: imagePath,
+                    SKU,
+                    weight,
+                    size,
+                    variants, 
+                    category_name,
+                    brand
+                }
+            );    
+
+            await productModel.udpdateProduct(product_id, updateProduct)
+
+            const result = updateProduct[0];
+
+            
         } catch (err) {
             res.status(500).json({
                 success: false,

@@ -86,6 +86,42 @@ export async function deleteProduct(token: string, id: number) {
     }
 }
 
+export async function updateProduct(productData: string, token: string) {
+    if(!token || token === undefined) {
+        return {
+            ok: false,
+            msg: "No token sent to API"
+        }
+    }
+
+    try {
+        const res = await axios.put(`${import.meta.env.VITE_API_URL}/products/updateProduct`, 
+            productData,
+            {
+                headers: {
+                    Authorization: `Bearer${token}`
+                }
+            }
+        )
+
+        const data = res.data;
+
+        if (!data.ok) {
+            return {
+                ok: false,
+                msg: "Failed "
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+        return {
+            ok: false,
+            msg: "Failed to send productData to backend"
+        }
+    }
+}
+
 export async function getAllProduct() {
     try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/products/getProducts`);

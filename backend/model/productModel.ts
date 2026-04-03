@@ -1,6 +1,5 @@
-import { asyncWrapProviders } from "async_hooks";
 import db from "../db.ts";
-import { totalProductParams } from "../types/types.ts";
+import { updateProductParams } from "../types/types.ts";
 
 interface productParams {
     product_name: string,
@@ -50,10 +49,19 @@ const productModel = {
 
     //save product to database
     saveProduct: async ({
-        product_name, product_description, price, stock, 
-        image, SKU, weight, size, variants, category_name, 
-        brand, userId
-        }: productParams ) => {
+        product_name, 
+        product_description, 
+        price, 
+        stock, 
+        image, 
+        SKU, 
+        weight, 
+        size, 
+        variants, 
+        category_name, 
+        brand, 
+        userId
+    }: productParams ) => {
 
         // Get category_id from category_name
         const [category]: any = await db.query(`
@@ -69,10 +77,17 @@ const productModel = {
         `, [
                 product_name, 
                 product_description,
-                price, stock, image, 
-                SKU, weight, size, 
-                variants, brand,
-                categoryId, userId, "Active"
+                price, 
+                stock, 
+                image, 
+                SKU, 
+                weight, 
+                size, 
+                variants, 
+                brand,
+                categoryId, 
+                userId, 
+                "Active"
         ]); 
 
         return {
@@ -81,7 +96,18 @@ const productModel = {
         };
     },
     
-    udpdateProduct: async() => {
+    udpdateProduct: async({
+        product_name,
+        product_description,
+        price,
+        stock,
+        image,
+        SKU,
+        weight,
+        size,
+        variants,
+        brand,
+    }: updateProductParams) => {
         const [row] = await db.query(`
             UPDATE TABLE products
             SET product_name = ?, product_description = ?

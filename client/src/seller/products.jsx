@@ -1,16 +1,38 @@
 import { useEffect, useState } from "react";
 import NavBar from "./nav";
+
+//Modal imports 
 import Modal from "../modals/Modal.jsx";
 import DeleteModal from "../modals/ReusableModal.jsx";
-import { addProduct, getAllProduct, deleteProduct } from "../api/productApi.js";
+import UpdateProductModal from "../modals/updateModals/updateProductModal.jsx";
+
+//Product API imports 
+import { addProduct, getAllProduct, deleteProduct, updateProduct } from "../api/productApi.js";
+
+//utils
 import { getAuthData } from "../utils/authGetter.js";
 
 export default function Products() {
+    
+    //Modal states 
     const[isOpen, setIsOpen] = useState(false);
+    const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    //Error State
     const[error, setError] = useState('');
+
+    //Data State
     const[data, setData] = useState([]);
+
+    //Selected Id for crud state
     const[selectedId, setSelectedId] = useState('');
+
+
+    //Update product state
+    const[updateProduct, setUpdateProduct] = useState({});
+
+    //Product creation state 
     const [product, setProduct] = useState({
         product_name: '',
         product_description: '',
@@ -24,6 +46,8 @@ export default function Products() {
         brand: '',
         image: null
     });
+
+    //Auth utils
     const {token, parsedUser} = getAuthData();
 
     useEffect(() => {
@@ -109,20 +133,35 @@ export default function Products() {
         }       
     }
 
+    const handleUpdateProduct = async() => {
+        try {
+            const res = await updateProduct(updateProduct, token);
+
+            if (!res.ok) {
+                setError(res.msg);
+            }
+
+        } catch (error) {
+            conso
+        }
+    }
+
     const handleDelete = async () => {  
         try {
             const res = await deleteProduct(token, selectedId);
 
             if (!res.ok) {
-                    setData(prev => prev.filter(data => data.product_id !== selectedId)
+                    setData(prev => 
+                        prev.filter(data => 
+                        data.product_id !== selectedId
+                    )
                 );
             }
-            
-            console.log(res);
 
             if (!res.ok) {
                 console.log("Error occured");
             }
+
         } catch (error) {
             console.log("Cannot send data to backend ", error);
         }
@@ -174,7 +213,28 @@ export default function Products() {
                                 <td className="px-4 py-4">{product.category_name}</td>
                                 <td className="px-4 py-4 gap-4">
                                     <i className="fas fa-eye text-blue-500 hover:text-blue-700 cursor-pointer mx-1"></i>
-                                    <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"></i>
+
+                                    <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"
+                                        onClick={() => {
+                                            setUpdateProduct({
+                                                product_name: product.product_id,
+                                                product_description: product.product_description,
+                                                price: product.price,
+                                                stock: product.price,
+                                                SKU: product.SKU,
+                                                weight: product.weight,
+                                                size: product.size,
+                                                variants: product.variants,
+                                                category_name: product.category_name,
+                                                brand: product.brand,
+                                                image: product.image
+                                            });
+                                            setIsUpdateOpen(true);
+                                        }}
+                                    >
+
+                                    </i>
+
                                     <i className="fas fa-trash text-red-500 hover:text-red-700 cursor-pointer mx-1"
                                         onClick={() => {
                                             setSelectedId(product.product_id);
@@ -182,6 +242,7 @@ export default function Products() {
                                         }}
                                     >
                                     </i>
+
                                 </td>
                             </tr>
                         ))}
@@ -202,9 +263,13 @@ export default function Products() {
                 isDeleteOpen={isDeleteOpen}
                 setIsDeleteOpen={setIsDeleteOpen}
                 handleDelete={handleDelete}
-            >
+            />
                 
-            </DeleteModal>
+            <UpdateProductModal
+                isUpdateOpen={isUpdateOpen}
+                setUpdateProduct={setUpdateProduct}
+                handleUpdateProduct={handleUpdateProduct}
+            />
         </div>
     );
 }
