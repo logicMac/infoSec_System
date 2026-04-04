@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addProductParams, userDataParams } from "../types/types";
+import { addProductParams, userDataParams, updateProductParams } from "../types/types";
 
 export async function addProduct(productData:addProductParams, token: string) {
     if (!productData) {
@@ -17,8 +17,8 @@ export async function addProduct(productData:addProductParams, token: string) {
             productData,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`,
-                },
+                    Authorization: `Bearer ${token}`
+                }
             }
         )
         
@@ -86,7 +86,7 @@ export async function deleteProduct(token: string, id: number) {
     }
 }
 
-export async function updateProduct(productData: string, id: number, token: string) {
+export async function updateProduct(productData: updateProductParams, id: number, token: userDataParams) {
     if(!token || token === undefined) {
         return {
             ok: false,
@@ -99,7 +99,8 @@ export async function updateProduct(productData: string, id: number, token: stri
             productData,
             {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
                 }
             }
         )

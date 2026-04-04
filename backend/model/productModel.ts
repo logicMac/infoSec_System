@@ -96,7 +96,7 @@ const productModel = {
         };
     },
     
-    udpdateProduct: async({
+    updateProduct: async(id: number, {
         product_name,
         product_description,
         price,
@@ -106,14 +106,50 @@ const productModel = {
         weight,
         size,
         variants,
+        category_name,
         brand,
     }: updateProductParams) => {
+        
+        // Get category_id from category_name
+        const [category]: any = await db.query(`
+            SELECT category_id FROM product_categories WHERE category_name = ?
+        `, [category_name]);
+        
+        if (category.length === 0) {
+            throw new Error(`Category '${category_name}' not found`);
+        }
+        
+        const categoryId = category[0].category_id;
+        
         const [row] = await db.query(`
-            UPDATE TABLE products
-            SET product_name = ?, product_description = ?
-            price = ?, stock = ?, weight = ?, size = ?,
-            variants = ?, brand = ?, status = ?
-        `);
+            UPDATE products
+            SET 
+                product_name = ?, 
+                product_description = ?,
+                price = ?, 
+                stock = ?, 
+                image = ?,
+                SKU = ?, 
+                weight = ?, 
+                size = ?,
+                variants = ?, 
+                category_id = ?,
+                brand = ?
+            WHERE product_id = ?
+        `,[
+            product_name,
+            product_description,
+            price,
+            stock,
+            image,
+            SKU,
+            weight,
+            size,
+            variants,
+            categoryId,
+            brand,
+            id
+        ]);
 
         return row;
     },

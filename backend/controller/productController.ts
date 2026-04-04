@@ -10,7 +10,6 @@ const productController = {
             product_description, 
             price, 
             stock, 
-            image, 
             SKU, 
             weight, 
             size,
@@ -88,6 +87,7 @@ const productController = {
         }
     },
     
+    //delete product controller
     deleteProduct: async(req: Request, res: Response) => {
         const product_id: any = req.params.id;
 
@@ -121,7 +121,8 @@ const productController = {
         }
     },
 
-    updateProduct: async(req: Request, res: Response) => {
+    //update product controller
+    updateProduct: async(req: AuthRequest, res: Response) => {
         const product_id = req.params.id;
         const {
             product_name, 
@@ -135,6 +136,21 @@ const productController = {
             category_name, 
             brand
         } = req.body || {};
+        const userId = req.user?.id;
+
+        if (!userId) {
+            return res.status(400).json({
+                success: false,
+                msg: "Unauthorized: user not found"
+            });
+        }
+
+        if (!product_id) {
+            return res.status(400).json({
+                success: false,
+                msg: "Product ID is required"
+            });
+        }
 
         try {
             const imagePath = req.file ? req.file.filename : null;
@@ -154,10 +170,20 @@ const productController = {
                 }
             );    
 
-            await productModel.udpdateProduct(product_id, updateProduct)
+            const result: any = await productModel.updateProduct(product_id, updateProduct);
 
-            const result = updateProduct[0];
+            if (!result && result.affectedRows === 0) {
+                return res.status(400).json({
+                    success: false,
+                    msg: "Failed to update product"
+                });
+            }
+            
+            res.status(200).json({
+                success: true,
+                msg: "Product updated successfully"
 
+            });
             
         } catch (err) {
             res.status(500).json({
@@ -167,6 +193,7 @@ const productController = {
         }
     },
 
+    //get all products 
     getProducts: async(req: Request, res: Response) => {
         try {
             const products = await productModel.getAllProduct();

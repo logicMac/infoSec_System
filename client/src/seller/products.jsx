@@ -7,10 +7,10 @@ import DeleteModal from "../modals/ReusableModal.jsx";
 import UpdateProductModal from "../modals/updateModals/updateProductModal.jsx";
 
 //Product API imports 
-import { addProduct, getAllProduct, deleteProduct, updateProduct } from "../api/productApi.js";
+import { addProduct, getAllProduct, deleteProduct, updateProduct } from "../api/productApi.ts";
 
 //utils
-import { getAuthData } from "../utils/authGetter.js";
+import { getAuthData } from "../utils/authGetter";
 
 export default function Products() {
     
@@ -28,17 +28,16 @@ export default function Products() {
     //Selected Id for crud state
     const[selectedId, setSelectedId] = useState('');
 
-
     //Update product state
-    const[updateProduct, setUpdateProduct] = useState({});
+    const[productToUpdate, setProducToUpdate] = useState({});
 
     //Product creation state 
-    const [product, setProduct] = useState({
+    const [product, setProduct] = useState({    
         product_name: '',
         product_description: '',
         price: 0,
         stock: 0,
-        SKU: '',
+        SKU: '',    
         weight: 0,
         size: '',
         variants: '',
@@ -133,16 +132,32 @@ export default function Products() {
         }       
     }
 
-    const handleUpdateProduct = async() => {
+    const handleUpdateProduct = async(e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        for (const key in productToUpdate) {
+            const value = productToUpdate[key];
+            if (value !== null) {
+                formData.append(key, value);
+            }
+        }
+        
         try {
-            const res = await updateProduct(updateProduct, selectedId, token);
+            const res = await updateProduct(formData, selectedId, token);
+
+            console.log(formData);
+            console.log(token);
+            console.log(selectedId);
+
 
             if (!res.ok) {
                 setError(res.msg);
             }
 
         } catch (error) {
-            conso
+            console.log("Cannot send data to API", error);
         }
     }
 
@@ -150,7 +165,7 @@ export default function Products() {
         try {
             const res = await deleteProduct(token, selectedId);
 
-            if (!res.ok) {
+            if (res.ok) {
                     setData(prev => 
                         prev.filter(data => 
                         data.product_id !== selectedId
@@ -173,7 +188,7 @@ export default function Products() {
             <NavBar/>   
 
             <div className="flex flex-col m-10 space-y-2">
-                <div className="flex flex-row justify-between items-Qstart">
+                <div className="flex flex-row justify-between items-start">
                     <p className="text-3xl font-semibold">Manage Products</p>
 
                     <div className="flex gap-4">
@@ -217,11 +232,11 @@ export default function Products() {
                                     <i className="fas fa-pen-to-square text-green-500 hover:text-green-700 cursor-pointer mx-1"
                                         onClick={() => {
                                             setSelectedId(product.product_id);
-                                            setUpdateProduct({
-                                                product_name: product.product_id,
+                                            setProducToUpdate({
+                                                product_name: product.product_name,
                                                 product_description: product.product_description,
                                                 price: product.price,
-                                                stock: product.price,
+                                                stock: product.stock,
                                                 SKU: product.SKU,
                                                 weight: product.weight,
                                                 size: product.size,
@@ -270,8 +285,8 @@ export default function Products() {
                 error={error}
                 isUpdateOpen={isUpdateOpen}
                 setIsUpdateOpen={setIsUpdateOpen}
-                updateProduct={updateProduct}
-                setUpdateProduct={setUpdateProduct}
+                updateProduct={productToUpdate}
+                setUpdateProduct={setProducToUpdate}
                 handleUpdateProduct={handleUpdateProduct}
             />
         </div>
