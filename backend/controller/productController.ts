@@ -122,8 +122,7 @@ const productController = {
     },
 
     //update product controller
-    updateProduct: async(req: AuthRequest, res: Response) => {
-        const product_id = req.params.id;
+    updateProduct: async(req: Request, res: Response) => {
         const {
             product_name, 
             product_description, 
@@ -137,18 +136,12 @@ const productController = {
             brand
         } = req.body || {};
         const userId = req.user?.id;
+        const product_id = req.params.id;
 
         if (!userId) {
             return res.status(400).json({
                 success: false,
                 msg: "Unauthorized: user not found"
-            });
-        }
-
-        if (!product_id) {
-            return res.status(400).json({
-                success: false,
-                msg: "Product ID is required"
             });
         }
 

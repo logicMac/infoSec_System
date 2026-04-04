@@ -160,6 +160,15 @@ const productModel = {
         `);
 
         return row[0].total;
+    },
+
+    getProductById: async (id: number) => {
+        const [row] = await db.query(`
+            SELECT * FROM products WHERE = ?    
+            `,[id]
+        );
+
+        return row;
     }
 }
 
