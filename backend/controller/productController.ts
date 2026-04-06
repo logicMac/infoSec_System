@@ -122,7 +122,7 @@ const productController = {
     },
 
     //update product controller
-    updateProduct: async(req: Request, res: Response) => {
+    updateProduct: async(req: AuthRequest, res: Response) => {
         const {
             product_name, 
             product_description, 
