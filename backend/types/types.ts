@@ -11,3 +11,7 @@ export interface updateProductParams {
     category_name: string,
     brand: string
 }
+
+export interface user {
+    user?: string;
+}

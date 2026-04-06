@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
+import { AuthRequest } from "../index";
 import productModel from "../model/productModel";
 import orderModel from "../model/orderModel"
 
 const orderController = {
-    orderProduct: async (req: Request, res: Response) => {
+    orderProduct: async (req: AuthRequest, res: Response) => {
         const product_id: any = req.params.id;
         const userId = req.user?.id;
 
@@ -15,11 +16,12 @@ const orderController = {
         }
 
         const isProductExist = await productModel.getProductById(product_id);
+        const result = isProductExist[0];
 
-        if (!isProductExist && isProductExist.affectedRows === 0) {
+        if (!isProductExist && result.length === 0) {
             return res.status(400).json({
                 success: false,
-
+                msg: "Product does not exist"
             })
         }
 
