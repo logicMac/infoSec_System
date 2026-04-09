@@ -10,14 +10,17 @@ export default function CustomerNavbar ({user}) {
     };
     
     return(
-        <aside className="flex h-screen bg-gray-100 shadow-xl ">
-            <div className="flex flex-row justify-between w-full p-5 h-20">
+        <aside className="flex h-screen bg-gray-100 shadow-xl">
+            <div className="flex flex-row justify-between w-full p-5 h-20 shadow-xl">
                 <div>
-                    <h1>ShopX</h1>
+                    <h1 className="text-2xl font-semibold">ShopX</h1>
                 </div>
 
                 <div className="">
-                    <input type="search" className="p-2 border rounded-md"/>
+                    <div className="flex items-center">
+                        <i className="fas fa-search text-gray-400 text-center cursor-pointer mx-1 absolute"></i>
+                        <input type="search" className="p-2 border border-gray-400 rounded-md relative"/>
+                    </div>
                 </div>
 
                 <div>
