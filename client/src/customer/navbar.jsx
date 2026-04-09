@@ -10,58 +10,20 @@ export default function CustomerNavbar ({user}) {
     };
     
     return(
-        <aside className="flex w-60 h-screen bg-gray-100 shadow-xl mt-1 fixed">
-            <div className="flex flex-col justify-between w-full ">
+        <aside className="flex h-screen bg-gray-100 shadow-xl ">
+            <div className="flex flex-row justify-between w-full p-5 h-20">
+                <div>
+                    <h1>ShopX</h1>
+                </div>
 
-                    {/* Sidebar Links */}
-                    <div className="flex flex-col space-y-2 text-gray-700 font-medium p-10">
-                        {/* Logo */}
-                        <div className="w-50">
-                            <img 
-                            src={AppLogo} 
-                            alt="App Logo"
-                            className="w-full object-contain"
-                            />
-                        </div>
-                        
-                        <div className="space-y-4">
-                            <Link className="flex items-center gap-3 hover:text-blue-600 transition">
-                                 <i className="fa-solid fa-compass"></i>
-                            Browse
-                            </Link>
+                <div className="">
+                    <input type="search" className="p-2 border rounded-md"/>
+                </div>
 
-                            <Link className="flex items-center gap-3 hover:text-blue-600 transition">
-                                <i className="fa-solid fa-cart-shopping"></i>
-                                Cart
-                            </Link>
-
-                            <Link className="flex items-center gap-3 hover:text-blue-600 transition">
-                                <i className="fa-solid fa-box"></i>
-                                Orders
-                            </Link>
-
-                            <Link className="flex items-center gap-3 hover:text-blue-600 transition">
-                                <i className="fa-solid fa-user"></i>
-                                Profile
-                            </Link>
-
-                            <Link className="flex items-center gap-3 hover:text-blue-600 transition">
-                                <i className="fa-solid fa-bell"></i>
-                                Notifications
-                            </Link>
-                        </div>
-
-                    </div>
-
-                    {/* Logout Button */}
-                    <div className="mt-5 flex flex-col space-y-5 border-t border-gray-300 p-8">
-                        <p className="text-gray-500 text-center mt-2">Welcome {user.username}!</p>
-                        <button onClick={handleLogout} className="flex items-center justify-center gap-2 p-2 bg-black text-white rounded-md w-full hover:bg-red-600 transition">
-                            <i className="fa-solid fa-right-from-bracket"></i>
-                            Logout
-                        </button>
-                    </div>
-                </div>  
+                <div>
+                    <button onClick={handleLogout} className="p-2 bg-black text-white rounded-md">Logout</button>
+                </div>
+            </div>  
         </aside>
     );
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { AuthRequest } from "../index";
 import productModel from "../model/productModel";
 import orderModel from "../model/orderModel"
+import { AuthRequest } from "../index";
 
 const orderController = {
     orderProduct: async (req: AuthRequest, res: Response) => {
@@ -15,18 +15,17 @@ const orderController = {
             });
         }
 
-        const isProductExist = await productModel.getProductById(product_id);
-        const result = isProductExist[0];
+        const [isProductExist]: any = await productModel.getProductById(product_id);
 
-        if (!isProductExist && result.length === 0) {
-            return res.status(400).json({
+        if (!isProductExist && isProductExist.length === 0) {
+            return res.status(404).json({
                 success: false,
                 msg: "Product does not exist"
             })
         }
 
         if (!userId) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
                 msg: "Unauthorized: user not found"
             })
@@ -42,3 +41,5 @@ const orderController = {
         }
     }
 }
+
+export default orderController;

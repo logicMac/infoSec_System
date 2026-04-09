@@ -173,9 +173,7 @@ export default function Products() {
                 );
             }
 
-            if (!res.ok) {
-                console.log("Error occured");
-            }
+            setIsDeleteOpen(false);
 
         } catch (error) {
             console.log("Cannot send data to backend ", error);
