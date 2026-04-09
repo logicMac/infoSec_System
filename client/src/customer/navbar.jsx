@@ -10,21 +10,22 @@ export default function CustomerNavbar ({user}) {
     };
     
     return(
-        <aside className="flex h-screen bg-gray-100 shadow-xl">
-            <div className="flex flex-row justify-between w-full p-5 h-20 shadow-xl">
+        <aside className="flex bg-gray-100 shadow-xl">
+            <div className="flex flex-row justify-between items-center w-full p-5 h-20 shadow-xl space-x-10">
                 <div>
                     <h1 className="text-2xl font-semibold">ShopX</h1>
                 </div>
 
-                <div className="">
-                    <div className="flex items-center">
-                        <i className="fas fa-search text-gray-400 text-center cursor-pointer mx-1 absolute"></i>
-                        <input type="search" className="p-2 border border-gray-400 rounded-md relative"/>
-                    </div>
+                <div className="space-x-5">
+                    <Link className="hover:opacity-50">Home</Link>
+                    <Link>Browse</Link>
+                    <Link>Cart</Link>
+                    <Link>Orders</Link>
+                    <Link>Notifications</Link>
                 </div>
 
                 <div>
-                    <button onClick={handleLogout} className="p-2 bg-black text-white rounded-md">Logout</button>
+                    <button onClick={handleLogout} className="p-2 bg-black text-white rounded-md w-30">Logout</button>
                 </div>
             </div>  
         </aside>

@@ -40,10 +40,19 @@ export default function CustomerDashboard() {
     return (
         <div className="min-h-screen bg-gray-50">
             <CustomerNavbar/>
-            <div className="flex justify-between items-center">
-                <div>
-
+            <div className="flex flex-row justify-center items-center p-10 gap-5">
+                <div className="flex flex-col items-center justify-center w-100 rounded-md shadow-xl h-30">
+                    <h1>Total Orders</h1>
                 </div>
+
+                <div className="flex flex-col items-center justify-center w-100 rounded-md shadow-xl h-30">
+                    <h1>Total Spent</h1>
+                </div>
+
+                <div className="flex flex-col items-center justify-center w-100 rounded-md shadow-xl h-30">
+                    <h1>Cart</h1>
+                </div>
+                
             </div>
 
             
