@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import AppLogo from "../assets/AppLogo.png";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomerNavbar ({user}) {
-    const handleLogout = () => {
+    const navigate = useNavigate();
+    const handleLogout = () => {    
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        Navigate("/login");
+        navigate("/login");
     };
     
     return(
