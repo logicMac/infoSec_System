@@ -39,6 +39,19 @@ const orderController = {
                 msg: "Internal Server Error"
             });
         }
+    },
+
+    deleteProduct: async (req:Request, res: Response) => {
+        const product_id = req.user.id;
+
+        try {
+            
+        } catch (err) {
+            res.status(500).json({
+                success: false,
+                msg: "Internal Server Error"
+            });
+        }
     }
 }
 
