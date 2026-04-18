@@ -33,6 +33,14 @@ const orderController = {
         
         try {
 
+            const order: any = await orderModel.orderProduct(product_id);
+
+            res.status(200).json({
+                success: false,
+                msg: "Order Placed Successfully",
+                product: {order}
+            });
+
         } catch (err) {
             res.status(500).json({
                 success: false,
@@ -41,8 +49,8 @@ const orderController = {
         }
     },
 
-    deleteProduct: async (req:Request, res: Response) => {
-        const product_id = req.user.id;
+    cancelOrder: async (req: AuthRequest, res: Response) => {
+        const product_id = req.user?.id;
 
         try {
             

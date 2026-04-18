@@ -51,11 +51,16 @@ export default function CustomerDashboard() {
 
                 <div className="flex flex-col items-center justify-center w-100 rounded-md shadow-xl h-30">
                     <h1>Cart</h1>
-                </div>
-                
+                </div>  
             </div>
 
-            
+            <div className="flex flex-row justify-center items-start p-10 gap-5">       
+                <div className="flex flex-col gap-5">
+                    <div className="flex flex-col items-center justify-center w-150 rounded-md shadow-xl h-30"></div>
+                    <div className="flex flex-col items-center justify-center w-150 rounded-md shadow-xl h-115"></div>
+                </div>
+                <div className="flex flex-col items-center justify-center w-150 rounded-md shadow-xl h-150"></div>
+            </div>
         </div>
     );
 }

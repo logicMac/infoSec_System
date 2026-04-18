@@ -3,7 +3,7 @@ import CustomerNavbar from "./navbar";
 import { getAllProduct } from "../api/productApi";
 
 export default function BrowseProducts () {
-    const [products, setProducts] = useState({});
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,16 +19,23 @@ export default function BrowseProducts () {
                 console.log(error);
             }
         }
-    })
+        
+        fetchData();
+    }, [])
 
     return(
         <div className="">
             <CustomerNavbar/>
-            <div className="flex flex-col justify-center items-center">
-                <h1>Products</h1>
 
-                {products.map((p) => {
-                    <div key={p.product_id} className="flex flex-col p-5">
+            <div className="flex justify-start items-start p-10">
+                    <h1 className="text-2xl font-semibold">Products</h1>
+            </div>
+
+            <div className="flex flex-col justify-center items-center">
+                
+
+                {products.map((p) => (
+                    <div key={p.product_id} className="flex flex-col items-start justify-center p-5 shadow-2xl">
                         <img src="" alt="" />
 
                         <h1>{p.product_name}</h1>
@@ -39,7 +46,7 @@ export default function BrowseProducts () {
                             <button className="p-2 text-white rounded-e-md hover:scale-105 transition duration-200">Buy</button>
                         </div>
                     </div>
-                })}
+                ))}
             </div>  
         </div>
     );

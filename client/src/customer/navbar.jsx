@@ -14,12 +14,12 @@ export default function CustomerNavbar ({user}) {
         <aside className="flex bg-gray-100 shadow-xl">
             <div className="flex flex-row justify-between items-center w-full p-5 h-20 shadow-xl space-x-10">
                 <div>
-                    <h1 className="text-2xl font-semibold">ShopX</h1>
+                    <h1 className="text-2xl font-semibold">ShopX</h1>           
                 </div>
 
                 <div className="space-x-5">
                     <Link className="hover:opacity-50">Home</Link>
-                    <Link>Browse</Link>
+                    <Link to='/customer/browseProducts'>Browse</Link>
                     <Link>Cart</Link>
                     <Link>Orders</Link>
                     <Link>Notifications</Link>
