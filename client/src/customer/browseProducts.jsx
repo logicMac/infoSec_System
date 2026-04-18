@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import CustomerNavbar from "./navbar";
 import { getAllProduct } from "../api/productApi";
 
+
 export default function BrowseProducts () {
     const [products, setProducts] = useState([]);
+    const [selectedId, setSelectedId] = useState();
+    const [order, setOrder] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,20 +33,18 @@ export default function BrowseProducts () {
             <div className="flex justify-start items-start p-10">
                     <h1 className="text-2xl font-semibold">Products</h1>
             </div>
-
-            <div className="flex flex-col justify-center items-center">
-                
-
-                {products.map((p) => (
-                    <div key={p.product_id} className="flex flex-col items-start justify-center p-5 shadow-2xl">
+ 
+            <div className="flex flex-row justify-start items-center gap-5 p-10">
+                {products.map((p) => (  
+                    <div key={p.product_id} className="flex flex-col items-start justify-center p-5 shadow-xl rounded-md gap-y-3"> 
                         <img src="" alt="" />
 
                         <h1>{p.product_name}</h1>
                         <p>{p.product_descripton}</p>
                         
-                        <div className="flex flex-row justify-center items-center space-x-3">
-                            <button className="p-2 text-white rounded-e-md hover:scale-105 transition duration-200">Cart</button>
-                            <button className="p-2 text-white rounded-e-md hover:scale-105 transition duration-200">Buy</button>
+                        <div className="flex flex-row justify-center items-center gap-5 w-100">
+                            <button className="p-2 text-blackc border rounded-md hover:scale-105 transition duration-200 w-full">Cart</button>
+                            <button className="p-2 text-white bg-black rounded-md hover:scale-105 transition duration-200 w-full">Buy</button>
                         </div>
                     </div>
                 ))}

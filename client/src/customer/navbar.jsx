@@ -18,7 +18,7 @@ export default function CustomerNavbar ({user}) {
                 </div>
 
                 <div className="space-x-5">
-                    <Link className="hover:opacity-50">Home</Link>
+                    <Link to='/customer/Dashboard' className="hover:opacity-50">Home</Link>
                     <Link to='/customer/browseProducts'>Browse</Link>
                     <Link>Cart</Link>
                     <Link>Orders</Link>
