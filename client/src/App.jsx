@@ -8,6 +8,7 @@ import NotFound404 from "./pages/Notfound404"
 import NavBar from "./seller/nav";
 import Products from "./seller/products"
 import BrowseProducts from "./customer/browseProducts"
+import ProductDetail from "./customer/productDetail"
 import { Route, Router, Routes } from "react-router-dom"
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="seller/dashboard" element={<SellerDashboard/>}/>
           <Route path="/seller/Products" element={<Products/>}/>
           <Route path="/customer/browseProducts" element={<BrowseProducts/>}/>
+          <Route path="/customer/productDetail" element={<ProductDetail/>}/>
           <Route path="*" element={<NotFound404/>}/>
       </Routes>
     </>

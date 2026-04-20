@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import CustomerNavbar from "./navbar";
 import { getAllProduct } from "../api/productApi";
-
+import { useNavigate } from "react-router-dom";
 
 export default function BrowseProducts () {
     const [products, setProducts] = useState([]);
     const [selectedId, setSelectedId] = useState();
+    const [selectedProduct, setSelectedProduct] = useState({});
     const [order, setOrder] = useState();
     const [error, setError] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,7 +59,15 @@ export default function BrowseProducts () {
 
                         <div className="flex flex-row justify-center items-center gap-5 w-100">
                             <button className="p-2 text-blackc border rounded-md hover:scale-105 transition duration-200 w-full">Cart</button>
-                            <button className="p-2 text-white bg-black rounded-md hover:scale-105 transition duration-200 w-full">Buy</button>
+                            <button 
+                                onClick={() => {
+                                    navigate('/customer/productDetail', {
+                                        state: {product: p}
+                                    }); 
+                                }}
+                                className="p-2 text-white bg-black rounded-md hover:scale-105 transition duration-200 w-full">
+                                    Buy
+                            </button>
                         </div>
                     </div>
                 ))}
