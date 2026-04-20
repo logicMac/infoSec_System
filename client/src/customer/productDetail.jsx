@@ -10,17 +10,17 @@ export default function ProductDetail() {
       <div>
          <CustomerNavbar/>
 
-         {product((p) => {
-            <div key={p.product_id} className="flex flex-row justify-center items-center space-x-5">
-               <div>
-                  <img src={`http://localhost:3000/uploads/${p.image}`} alt="" />
-               </div>
-
-               <div className="flex fkex-col">
-
-               </div>
+            <div key={product.product_id} className="flex flex-row justify-center items-center space-x-5 p-50">
+               <div className="flex justify-center items-center w-120 shadow-2xl rounded-md">
+                  <img src={`http://localhost:3000/uploads/${product.image}`} alt="" className="h-100"/>
+               </div>   
+               
+               <div className="flex flex-col">
+                  <h1>{product.name}</h1>
+                  <p>{product.product_description}</p>   
+                  <p>{product.price}</p>
+               </div>   
             </div>
-         })}
-      </div>
+      </div>   
    ); 
 }
