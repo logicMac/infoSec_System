@@ -2,13 +2,6 @@ import {Request, Response } from "express";
 import productModel from "../model/productModel";
 import { AuthRequest } from "../index";
 
-interface AuthRequest extends Request {
-    user?: {
-        id: string;
-        // add other user properties here if needed
-    };
-}
-
 //product controller
 const productController = {
     saveProduct: async (req: AuthRequest, res: Response) => {
@@ -129,7 +122,7 @@ const productController = {
     },
 
     //update product controller
-    updateProduct: async(req: AuthRequest, rzes: Response) => {
+    updateProduct: async(req: AuthRequest, res: Response) => {
         const {
             product_name, 
             product_description, 

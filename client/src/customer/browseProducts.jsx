@@ -41,11 +41,11 @@ export default function BrowseProducts () {
             </div>
 
             <div className="flex flex-row items-start justify-center text-sm text-center gap-5 tracking-wide">
-                <div className="p-3 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Apparel</div>
-                <div className="p-3 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Electronics</div>
-                <div className="p-3 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Fashion</div>
-                <div className="p-3 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Toys</div>
-                <div className="p-3 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Books</div>
+                <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Apparel</div>
+                <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Electronics</div>
+                <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Fashion</div>
+                <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Toys</div>
+                <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Books</div>
             </div>
  
             <div className="flex flex-row justify-start items-center gap-5 p-10">

@@ -1,16 +1,16 @@
 import axios from "axios";
 
-export async function orderProducts(user_id: number, product_id: number, token: string) {
-    if (user_id == null || product_id == null) {
+export async function orderProducts(product_id: number, token: string) {
+    if (product_id == null || token == null) {
         console.log("Api does not receive the data");
         return;
     }
     try {
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/orders/orderProduct/${user_id}/${product_id}`, 
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/orders/orderProduct/${product_id}`, 
             {},
             {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`    
                 }
             }
         );

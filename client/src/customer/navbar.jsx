@@ -12,7 +12,7 @@ export default function CustomerNavbar ({user}) {
     
     return(
         <aside className="flex bg-gray-100 shadow-xl">
-            <div className="flex flex-row justify-between items-center w-full p-5 h-20 shadow-xl space-x-10">
+            <div className="flex flex-row justify-between items-center w-full p-5 h-20 shadow-xl space-x-10 overflow-hidden">
                 <div>
                     <h1 className="text-2xl font-semibold">ShopX</h1>           
                 </div>
