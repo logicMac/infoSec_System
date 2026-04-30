@@ -34,3 +34,11 @@ export async function orderProducts(product_id: number, token: string) {
         console.log(error);
     }
 }
+
+export async function deleteOrder(token: string, product_id: number) {
+    try {
+        
+    } catch (error) {
+        console.log(error);
+    }
+}

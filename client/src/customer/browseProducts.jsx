@@ -36,7 +36,7 @@ export default function BrowseProducts () {
 
             <div className="flex justify-start items-start p-10">
                 <div className="w-full h-60 shadow-xl rounded-xl">
-                    image
+                    <img src="https://cdn.create.vista.com/api/media/medium/412591868/stock-photo-happy-man-shirt-holding-shopping-bags-blue?token=" className="object-fit w-full h-60" alt="" />
                 </div>
             </div>
 
