@@ -7,6 +7,7 @@ const orderController = {
     orderProduct: async (req: AuthRequest, res: Response) => {
         const product_id: any = req.params.id;
         const userId = req.user?.id;
+        const {quantity, totalPrice, payment_method, size} = req.body || {};
 
         if (!product_id) {
             return res.status(400).json({
@@ -33,7 +34,7 @@ const orderController = {
         
         try {
 
-            const order: any = await orderModel.orderProduct(product_id);
+            const order: any = await orderModel.orderProduct(product_id, userId, quantity, totalPrice, payment_method, size);
 
             res.status(200).json({
                 success: false,

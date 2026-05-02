@@ -1,158 +1,177 @@
 import { useState } from "react";
 import CustomerNavbar from "./navbar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { orderProducts } from "../api/orderApi";
 import { getAuthData } from "../utils/authGetter";
 import COD from "../assets/COD.png";
+import Maya from "../assets/Maya.png";
 
 export default function ProductDetail() {
-   const location = useLocation();
-   const [quantity, setQuantity] = useState(1);
-   const product = location.state?.product;
-   const token = getAuthData();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(1);
+  const [orderDetails, setOrderDetails] = useState({ payment_method: 'COD', size: 'M' });
+  
+  const product = location.state?.product;
+  const token = getAuthData();
 
-   const handleBuyProduct = async (e) => {
-      e.preventDefault(); // CRITICAL: Stop the page from refreshing
-      try {
-         // Fixed typo: product instead of poroduct
-         const res = await orderProducts(token, product.product_id); 
-         console.log("Success:", res);
-      } catch (error) {
-         console.log(error);
-      }
-   } 
+  const totalPrice = quantity * product.price;
+  console.log(totalPrice);
+  const handleBuyProduct = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await orderProducts(token, {
+        product_id: product.product_id,
+        quantity, totalPrice,
+        ...orderDetails
+      });
+      console.log("Success:", res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-   const increment = () => {
-      setQuantity(quantity + 1);
-   }
+  if (!product) return <div className="p-10 text-center">No product data found.</div>;
 
-   const decrement = () => {
-      setQuantity(quantity - 1);
+  return (
+    <div className="min-h-screen bg-slate-50 pb-12">
+      <CustomerNavbar />
 
-      if (quantity <= 1) {
-         setQuantity(1);
-      }
-   }
+      <main className="max-w-5xl mx-auto px-4 mt-8">
+        {/* Back Button */}
+        <button 
+          onClick={() => navigate(-1)}
+          className="flex items-center text-gray-500 hover:text-black mb-6 transition-colors"
+        >
+          <span className="mr-2">←</span> Back to Shop
+        </button>
 
-   if (!product) return <div className="p-10 text-center">No product data found.</div>;
+        {/* The Unified Card */}
+        <form 
+          onSubmit={handleBuyProduct}
+          className=" bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden flex flex-col md:flex-row"
+        >
+          
+          {/* LEFT SIDE: Product Info */}
+          <div className="flex-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-gray-100">
+            <div className="flex flex-col sm:flex-row gap-8">
+              {/* Product Image */}
+              <div className="w-full sm:w-48 h-48 bg-gray-50 rounded-2xl flex-shrink-0 overflow-hidden border border-gray-100">
+                <img 
+                  src={`http://localhost:3000/uploads/${product.image}`} 
+                  alt={product.product_name} 
+                  className="h-full w-full object-cover"
+                />
+              </div>
 
-   return (
-      <div className="min-h-screen bg-gray-100">
-         <CustomerNavbar />
-
-         {/* Main Container: Added max-width so it doesn't look stretched on big screens */}
-         <form 
-            onSubmit={handleBuyProduct} 
-            className="flex flex-col md:flex-row gap-10 p-6 md:p-12 max-w-7xl mx-auto"
-         >
-            {/* LEFT SIDE: Product Display */}
-            <div className="flex flex-col  w-full md:w-3/5 space-y-8">
-
-               <p>&#8592;</p>
-               
-               {/* Price Header - Explicitly Left Aligned */}
-               <div className="space-y-1">
-                  <p className="text-gray-500 font-medium uppercase text-xs tracking-widest">Amount to Pay</p>  
-                  <p className="text-4xl font-bold text-gray-900">&#8369;{product.price}</p>
-               </div>
-
-               {/* Product Detail Card */}
-               <div className="flex items-center justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-                  <div className="flex flex-row justify-center items-center gap-4">
-                     <div className="h-32 w-32 bg-gray-50 rounded-xl overflow-hidden flex-shrink-0 border border-gray-100">
-                        <img 
-                           src={`http://localhost:3000/uploads/${product.image}`} 
-                           alt={product.product_name} 
-                           className="h-full w-full object-contain p-2"
-                        />
-                  </div>
-                  <div className="flex flex-row">  
-                     <div className="flex flex-col space-y-2">
-                           <h2 className="text-xl font-semibold text-gray-800">{product.product_name}</h2>
-                           <p className="text-gray-400 text-sm italic">{product.product_description}</p>
-                           <div className="flex flex-row justify-start items-center gap-2"> 
-                              <p>Size:</p> 
-                              <select className="text-center p-1 border border-gray-300 rounded-md w-15">
-                              <option value="S">S</option>
-                              <option value="M">M</option>
-                              <option value="L">L</option>
-                              <option value="XL">XL</option>
-                              <option value="XXL">XXL</option>
-                           </select>
-                           </div>
-                     </div>
-                  </div>
-                  </div>
-                  
-                  <div className="flex flex-row bg-gray-200 rounded-md justify-center items-center space-x-4">
-                     <button 
-                        onClick={decrement}
-                        className="p-1 border border-gray-100 rounded-md"
-                        >
-                           -
-                     </button>
-                     <p>{quantity}</p>
-                     <button 
-                        onClick={increment}
-                        className="p-1 border border-gray-100 rounded-md"
-                        >
-                           +
-                     </button>
-                  </div>
-               </div>      
-            </div>   
-
-            {/* RIGHT SIDE: Order Summary Card */}
-            <div className="w-full md:w-2/5 bg-white p-8 rounded-3xl shadow-xl border border-gray-200 h-fit sticky top-10">
-               <h1 className="text-2xl font-bold text-gray-800 mb-6">Order summary</h1>
-               
-               <div className="space-y-4">
-                  <div className="flex justify-between text-gray-600">
-                     <span>Subtotal</span>
-                     <span className="font-medium">&#8369;{product.price}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-600">
-                     <span>Shipping</span>
-                     <span className="text-green-600 font-medium">Calculated at next step</span>
-                  </div>
-                  
-                  <div className="pt-4 border-t border-gray-100">
-                     <div className="space-y-4">
-                        <h1 className="text-xl font-semibold">Payment method</h1>
-
-                        <div className="flex flex-col space-y-4">
-                           <div className="flex flex-row justify-between items-center">
-                              <div className="flex flex-row">
-                                 <img src={COD} alt="" className="w-10"/>
-                              <p>Cash on delivery</p>
-                              </div>
-                              <input type="radio" />
-                           </div>
-                        </div>
-
-                        <div className="flex flex-col space-y-4">
-                           <div className="flex flex-row justify-between items-center">
-                              <p>Maya</p>
-                              <input type="radio" />
-                           </div>
-                        </div>   
-                     </div>      
-
-                     <div className="flex justify-between items-end">
-                        <span className="text-gray-800 font-bold text-lg">Total</span>
-                        <span className="text-3xl font-black text-black">&#8369;{product.price}</span>
-                     </div>
+              {/* Product Details */}
+              <div className="flex-1">
+                <span className="text-blue-600 text-xs font-bold uppercase tracking-widest">New Arrival</span>
+                <h1 className="text-3xl font-bold text-gray-900 mt-1">{product.product_name}</h1>
+                <p className="text-gray-500 mt-2 leading-relaxed">{product.product_description}</p>
+                
+                <div className="mt-6 flex flex-wrap gap-6">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">Size</label>
+                    <select 
+                      value={orderDetails.size}
+                      onChange={(e) => setOrderDetails({...orderDetails, size: e.target.value})}
+                      className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-black outline-none"
+                    >
+                      {['S', 'M', 'L', 'XL', 'XXL'].map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
                   </div>
 
-                  <button 
-                     type="submit"
-                     className="w-full bg-black hover:scale-105 transition duration-200 text-white font-bold py-4 rounded-xl mt-6 active:scale-95 shadow-lg shadow-blue-200"
-                  >
-                     Confirm Purchase
-                  </button>
-               </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-400 uppercase mb-2">Quantity</label>
+                    <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                      <button 
+                        type="button"
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="px-4 py-2 hover:bg-gray-50 active:bg-gray-100 border-r border-gray-200"
+                      >-</button>
+                      <span className="px-4 font-medium">{quantity}</span>
+                      <button 
+                        type="button"
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="px-4 py-2 hover:bg-gray-50 active:bg-gray-100 border-l border-gray-200"
+                      >+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-         </form>
-      </div>   
-   ); 
+
+            {/* Payment Selection */}
+            <div className="mt-12">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider mb-4">Payment Method</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { id: 'COD', label: 'Cash on Delivery', img: COD },
+                  { id: 'Maya', label: 'Maya Wallet', img: Maya }
+                ].map((method) => (
+                  <label 
+                    key={method.id}
+                    className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                      orderDetails.payment_method === method.id 
+                      ? 'border-black bg-gray-50' 
+                      : 'border-gray-100 hover:border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <img src={method.img} alt="" className="w-8 h-8 object-contain" />
+                      <span className="font-medium text-gray-700">{method.label}</span>
+                    </div>
+                    <input 
+                      type="radio" 
+                      name="payment"
+                      className="accent-black w-4 h-4"
+                      checked={orderDetails.payment_method === method.id}
+                      onChange={() => setOrderDetails({...orderDetails, payment_method: method.id})}
+                    />
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE: Checkout Summary */}
+          <div className="w-full md:w-80 bg-gray-50 p-8 md:p-12 flex flex-col justify-between">
+            <div>
+              <h2 className="text-xl font-bold mb-6">Summary</h2>
+              <div className="space-y-4">
+                <div className="flex justify-between text-gray-500">
+                  <span>Price per unit</span>
+                  <span>₱{product.price.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between text-gray-500">
+                  <span>Quantity</span>
+                  <span>x{quantity}</span>
+                </div>
+                <div className="flex justify-between text-gray-500">
+                  <span>Shipping</span>
+                  <span className="text-green-600 font-medium">Free</span>
+                </div>
+                <div className="pt-4 border-t border-gray-200 flex justify-between items-end">
+                  <span className="font-bold text-gray-900">Total</span>
+                  <div className="text-right">
+                    <p className="text-2xl font-black">₱{(product.price * quantity).toLocaleString()}</p>
+                    <p className="text-[10px] text-gray-400 uppercase">VAT Included</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              type="submit"
+              className="w-full bg-black text-white font-bold py-4 rounded-2xl mt-12 hover:bg-zinc-800 transition-all active:scale-95 shadow-xl shadow-gray-200"
+            >
+              Complete Order
+            </button>
+          </div>
+          
+        </form>
+      </main>
+    </div>
+  );
 }

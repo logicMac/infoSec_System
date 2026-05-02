@@ -1,10 +1,10 @@
 import db from "../db";
 
 const orderModel = {
-    orderProduct: async(id: string) => {
+    orderProduct: async(product_id: string, userId: number, quantity: string, totalPrice: string, payment_method: string, size: string) => {
         try {
             const [result] = await db.query(`
-                INSERT INTO orders WHERE = ?`,[id]
+                INSERT INTO orders WHERE = ?`,[product_id, userId, quantity, payment_method, size]
             );
 
             return result;
