@@ -16,7 +16,7 @@ export default function ProductDetail() {
   const token = getAuthData();
 
   const totalPrice = quantity * product.price;
-  console.log(totalPrice);
+  
   const handleBuyProduct = async (e) => {
     e.preventDefault();
     try {
