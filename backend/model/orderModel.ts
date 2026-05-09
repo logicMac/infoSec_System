@@ -10,7 +10,7 @@ const orderModel = {
         size: string) => {
         try {
             
-            const [result] = await db.query(`
+            const [result]: any = await db.query(`
                 INSERT INTO orders(product_id, user_Id, payment_Method)`,
                 [product_id, userId, payment_method]
             );
@@ -18,10 +18,14 @@ const orderModel = {
             const order_id = result.insertId;
 
             const [order_items] = await db.query(`
-                INSERT INTO order_items(quantity, totalPrice, size) VALUES
-            `,[order_id, quantity, totalPrice, size]);
+                INSERT INTO order_items(order_id, product_id, quantity, totalPrice, size) VALUES
+            `,[order_id, product_id, quantity, totalPrice, size]);
 
-            return order_items;
+            return {
+                result, 
+                order_items
+            }
+
         } catch (error) {
             console.log(error);
         }
@@ -32,6 +36,8 @@ const orderModel = {
             const [result] = await db.query(`
                 DELETE FROM orders WHERE order_id = ?     
             `, [order_id]);
+
+            return result;
         } catch (error) {
             console.log(error);
         }
