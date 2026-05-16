@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CustomerNavbar from "./navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { orderProducts } from "../api/orderApi";
@@ -7,6 +7,16 @@ import COD from "../assets/COD.png";
 import Maya from "../assets/Maya.png";
 
 export default function ProductDetail() {
+  useEffect(() => {
+    const user = async () => {
+      try{
+        
+      } catch {
+
+      }
+    }
+  })
+
   const location = useLocation();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);

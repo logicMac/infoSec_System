@@ -8,6 +8,7 @@ const orderModel = {
         totalPrice: string, 
         payment_method: string, 
         size: string) => {
+            
         try {
             
             const [result]: any = await db.query(`
@@ -38,6 +39,7 @@ const orderModel = {
             `, [order_id]);
 
             return result;
+
         } catch (error) {
             console.log(error);
         }
