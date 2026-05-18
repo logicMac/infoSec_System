@@ -7,7 +7,8 @@ const orderModel = {
         quantity: string, 
         totalPrice: string, 
         payment_method: string, 
-        size: string) => {
+        size: string,
+        Vat: string) => {
             
         try {
             
@@ -20,7 +21,7 @@ const orderModel = {
 
             const [order_items] = await db.query(`
                 INSERT INTO order_items(order_id, product_id, quantity, totalPrice, size) VALUES
-            `,[order_id, product_id, quantity, totalPrice, size]);
+            `,[order_id, product_id, quantity, totalPrice, size, Vat]);
 
             return {
                 result, 

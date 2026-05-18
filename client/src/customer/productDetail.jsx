@@ -20,12 +20,12 @@ export default function ProductDetail() {
   const location = useLocation();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
-  const [orderDetails, setOrderDetails] = useState({ payment_method: 'COD', size: 'M' });
+  const [orderDetails, setOrderDetails] = useState({ payment_method: 'COD', size: 'M', Vat: 12});
   
   const product = location.state?.product;
   const token = getAuthData();
 
-  const totalPrice = quantity * product.price;
+  const totalPrice = quantity * product.price + orderDetails.Vat;
   
   const handleBuyProduct = async (e) => {
     e.preventDefault();
@@ -47,7 +47,7 @@ export default function ProductDetail() {
     <div className="min-h-screen bg-slate-50 pb-12">
       <CustomerNavbar />
 
-      <main className="max-w-5xl mx-auto px-4 mt-8">
+      <main className="max-w-5xl mx-auto py-30 px-4 mt-8">
         {/* Back Button */}
         <button 
           onClick={() => navigate(-1)}
@@ -59,7 +59,7 @@ export default function ProductDetail() {
         {/* The Unified Card */}
         <form 
           onSubmit={handleBuyProduct}
-          className=" bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden flex flex-col md:flex-row"
+          className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden flex flex-col md:flex-row"
         >
           
           {/* LEFT SIDE: Product Info */}
@@ -154,6 +154,10 @@ export default function ProductDetail() {
                   <span>Price per unit</span>
                   <span>₱{product.price.toLocaleString()}</span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">VAT</span>
+                  <span className="text-gray-500">{orderDetails.Vat}</span>
+                </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Quantity</span>
                   <span>x{quantity}</span>
@@ -165,7 +169,7 @@ export default function ProductDetail() {
                 <div className="pt-4 border-t border-gray-200 flex justify-between items-end">
                   <span className="font-bold text-gray-900">Total</span>
                   <div className="text-right">
-                    <p className="text-2xl font-black">₱{(product.price * quantity).toLocaleString()}</p>
+                    <p className="text-2xl font-black">₱{totalPrice.toLocaleString()}</p>
                     <p className="text-[10px] text-gray-400 uppercase">VAT Included</p>
                   </div>
                 </div>
@@ -176,7 +180,7 @@ export default function ProductDetail() {
               type="submit"
               className="w-full bg-black text-white font-bold py-4 rounded-2xl mt-12 hover:bg-zinc-800 transition-all active:scale-95 shadow-xl shadow-gray-200"
             >
-              Complete Order
+              Checkout
             </button>
           </div>
           
