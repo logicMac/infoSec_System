@@ -7,37 +7,33 @@ import COD from "../assets/COD.png";
 import Maya from "../assets/Maya.png";
 
 export default function ProductDetail() {
-  useEffect(() => {
-    const user = async () => {
-      try{
-        
-      } catch {
-
-      }
-    }
-  })
-
   const location = useLocation();
-  const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(1);
-  const [orderDetails, setOrderDetails] = useState({ payment_method: 'COD', size: 'M', Vat: 12});
-  
   const product = location.state?.product;
   const token = getAuthData();
+  const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(1);
+  const [orderDetails, setOrderDetails] = useState({ 
+    payment_method: 'COD', 
+    size: 'M', 
+    Vat: 12, 
+    Price: product.price
+  });
 
   const totalPrice = quantity * product.price + orderDetails.Vat;
   
   const handleBuyProduct = async (e) => {
     e.preventDefault();
     try {
-      const res = await orderProducts(token, {
-        product_id: product.product_id,
-        quantity, totalPrice,
-        ...orderDetails
-      });
-      console.log("Success:", res);
+      const res = await orderProducts(
+        token,
+        product.product_id,
+        quantity,
+        orderDetails
+      );
+      console.log(res);
+      console.log(token);
     } catch (error) {
-      console.log(error);
+      console.log("Error sending data to API");
     }
   };
 

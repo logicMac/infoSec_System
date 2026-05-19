@@ -202,9 +202,10 @@ export const userController =  {
             } 
 
             //get JWT token key
-            const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
+            const JWT_SECRET = process.env.JWT_SECRET as string;
             //get JWT expiration
             const JWT_EXPIRES: string = process.env.JWT_EXPIRES || "1h";
+
 
             //Sign the token
             const token = jwt.sign(

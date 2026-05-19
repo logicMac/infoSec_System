@@ -7,7 +7,8 @@ const orderController = {
     orderProduct: async (req: AuthRequest, res: Response) => {
         const product_id: any = req.params.id;
         const userId = req.user?.id;
-        const {quantity, totalPrice, payment_method, size} = req.body || {};
+        const {quantity, orderDetails} = req.body || {};
+        const {price, payment_method, size, Vat} = orderDetails || {};
 
         if (!product_id) {
             return res.status(400).json({
@@ -18,7 +19,7 @@ const orderController = {
 
         const [isProductExist]: any = await productModel.getProductById(product_id);
 
-        if (!isProductExist && isProductExist.length === 0) {
+        if (isProductExist.length === 0) {
             return res.status(404).json({
                 success: false,
                 msg: "Product does not exist"
@@ -26,18 +27,18 @@ const orderController = {
         }
 
         if (!userId) {
-            return res.status(404).json({
+            return res.status(401).json({
                 success: false,
                 msg: "Unauthorized: user not found"
             })
         }
         
         try {
-
-            const order: any = await orderModel.orderProduct(product_id, userId, quantity, totalPrice, payment_method, size);
+            const totalPrice = quantity * price + Vat;
+            const order: any = await orderModel.orderProduct(product_id, userId, quantity, totalPrice, payment_method, size, Vat);
 
             res.status(200).json({
-                success: false,
+                success: true,
                 msg: "Order Placed Successfully",
                 product: {order}
             });
