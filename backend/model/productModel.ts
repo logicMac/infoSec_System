@@ -164,7 +164,7 @@ const productModel = {
 
     getProductById: async (id: number) => {
         const [row] = await db.query(`
-            SELECT * FROM products WHERE = ?    
+            SELECT * FROM products WHERE product_id = ?    
             `,[id]
         );
 

@@ -13,14 +13,14 @@ const orderModel = {
         try {
             
             const [result]: any = await db.query(`
-                INSERT INTO orders(product_id, user_Id, payment_Method)`,
+                INSERT INTO orders(product_id, user_Id, payment_Method) VALUES (?, ?, ?)`,
                 [product_id, userId, payment_method]
             );
 
             const order_id = result.insertId;
 
             const [order_items] = await db.query(`
-                INSERT INTO order_items(order_id, product_id, quantity, totalPrice, size) VALUES
+                INSERT INTO order_items(order_id, product_id, quantity, total_price, size, Vat) VALUES (?, ?, ?, ?, ?, ?)
             `,[order_id, product_id, quantity, totalPrice, size, Vat]);
 
             return {
@@ -29,7 +29,8 @@ const orderModel = {
             }
 
         } catch (error) {
-            console.log(error);
+            console.error("Error creating product order:", error);
+            throw error;
         }
     },
 

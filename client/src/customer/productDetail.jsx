@@ -3,14 +3,17 @@ import CustomerNavbar from "./navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { orderProducts } from "../api/orderApi";
 import { getAuthData } from "../utils/authGetter";
+import SonnerDemo from "../../toast/toast";
 import COD from "../assets/COD.png";
 import Maya from "../assets/Maya.png";
 
 export default function ProductDetail() {
   const location = useLocation();
   const product = location.state?.product;
-  const token = getAuthData();
+  const auth = getAuthData();
+  const token = auth?.token;
   const navigate = useNavigate();
+  const [toast, isToastOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [orderDetails, setOrderDetails] = useState({ 
     payment_method: 'COD', 
@@ -30,8 +33,11 @@ export default function ProductDetail() {
         quantity,
         orderDetails
       );
-      console.log(res);
-      console.log(token);
+      
+      if (res.ok) {
+         isToastOpen(true);
+      }
+
     } catch (error) {
       console.log("Error sending data to API");
     }
@@ -182,6 +188,9 @@ export default function ProductDetail() {
           
         </form>
       </main>
+      <SonnerDemo
+          isToastOpen={false}
+      />
     </div>
   );
 }

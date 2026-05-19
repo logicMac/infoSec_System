@@ -34,19 +34,29 @@ const orderController = {
         }
         
         try {
-            const totalPrice = quantity * price + Vat;
-            const order: any = await orderModel.orderProduct(product_id, userId, quantity, totalPrice, payment_method, size, Vat);
+            const totalPrice = Number(quantity) * Number(price) + Number(Vat);
+            const order: any = await orderModel.orderProduct(
+                product_id,
+                userId,
+                String(quantity),
+                String(totalPrice),
+                payment_method,
+                size,
+                String(Vat)
+            );
 
             res.status(200).json({
                 success: true,
                 msg: "Order Placed Successfully",
-                product: {order}
+                product: { order }
             });
 
         } catch (err) {
+            console.error("orderProduct failed:", err);
             res.status(500).json({
                 success: false,
-                msg: "Internal Server Error"
+                msg: "Internal Server Error",
+                devError: err
             });
         }
     },
