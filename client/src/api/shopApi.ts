@@ -38,7 +38,7 @@ export async function submitSellerApplication(sellerData: sellerParams) {
         console.log(error);
         return {
             ok: false,
-            msg: "Cannot send data to backend"
+            msg: "Cannot send data to backend server"
         }
     }
 }
