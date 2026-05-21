@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import Logo from "../assets/Logo.png";
 import { LoginUserApi } from "../api/authApi";
 
@@ -22,8 +23,15 @@ export default function LoginPage() {
             
             if (!res.ok) {
                 setError(res.msg);
+                toast.error("Login Failed", {
+                    description: res.msg || "Please check your credentials",
+                });
                 return;
             }
+
+            toast.success("Login Successful!", {
+                description: "Redirecting to OTP verification...",
+            });
 
             // After successful login, redirect to OTP page with user data
             navigate("/otpPage", {
@@ -37,6 +45,9 @@ export default function LoginPage() {
 
         } catch (error) {
             console.error("Error sending data to API", error);
+            toast.error("Connection Error", {
+                description: "Please check your internet connection and try again",
+            });
         }
     }
 

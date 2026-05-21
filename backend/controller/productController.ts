@@ -89,7 +89,7 @@ const productController = {
     
     //delete product controller
     deleteProduct: async(req: Request, res: Response) => {
-        const product_id: any = req.params.id;
+        const product_id = Number(req.params.id);
 
         if(!product_id) {
             return res.status(400).json({
@@ -136,7 +136,7 @@ const productController = {
             brand
         } = req.body || {};
         const userId = req.user?.id;
-        const product_id = req.params.id;
+        const product_id = Number(req.params.id);
 
         if (!userId) {
             return res.status(400).json({

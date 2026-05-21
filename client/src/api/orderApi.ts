@@ -1,11 +1,13 @@
 import axios from "axios";
 
-
 // Order product endpoint
 export async function orderProducts(token: string, product_id: number, quantity: number, orderDetails: any) {
     if (product_id == null || token == null) {
         console.log("Api does not receive the data");
-        return { ok: false, msg: "Missing credentials or target data" };
+        return {
+                ok: false, 
+                msg: "Missing credentials or target data" 
+            };
     }
     try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/orders/orderProduct/${product_id}`, 
@@ -19,7 +21,7 @@ export async function orderProducts(token: string, product_id: number, quantity:
 
         const data = res.data;
 
-        if (!data.ok) {
+        if (!data.success) {
             return {
                 ok: false,
                 msg: data.msg || "Failed to order Product"
@@ -28,7 +30,7 @@ export async function orderProducts(token: string, product_id: number, quantity:
 
         return {
             ok: true,
-            msg: "Order placed Successfully",
+            msg: data.msg || "Order placed Successfully",
             data
         };
 
@@ -39,8 +41,36 @@ export async function orderProducts(token: string, product_id: number, quantity:
 }
 
 export async function deleteOrder(token: string, product_id: number) {
+    if (token === null || product_id === null) {
+        return {
+            ok: false, 
+            msg: "Missing auth or product data"
+        }
+    }
+
     try {
-        
+        const res = axios.delete(`${import.meta.env.VITE_API_URL}/orders/cancelOrder/${product_id}`,
+            {
+                headers: {
+                    Authorization: `Bearer + ${token}`
+                }
+            }
+        );
+
+        const data = res.data; 
+
+        if (!data.success) {
+            return {
+                ok: false,
+                msg: data.msg || "Failed to cancel order" 
+            }
+        } 
+
+        return {
+            ok: true,
+            data
+        }
+
     } catch (error) {
         console.log(error);
     }

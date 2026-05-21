@@ -3,7 +3,6 @@ import CustomerNavbar from "./navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { orderProducts } from "../api/orderApi";
 import { getAuthData } from "../utils/authGetter";
-import SonnerDemo from "../../toast/toast";
 import COD from "../assets/COD.png";
 import Maya from "../assets/Maya.png";
 
@@ -13,6 +12,8 @@ export default function ProductDetail() {
   const auth = getAuthData();
   const token = auth?.token;
   const navigate = useNavigate();
+
+  //states 
   const [toast, isToastOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [orderDetails, setOrderDetails] = useState({ 
@@ -22,8 +23,10 @@ export default function ProductDetail() {
     Price: product.price
   });
 
+  //total price calculation 
   const totalPrice = quantity * product.price + orderDetails.Vat;
   
+  //order product logic 
   const handleBuyProduct = async (e) => {
     e.preventDefault();
     try {
@@ -188,9 +191,7 @@ export default function ProductDetail() {
           
         </form>
       </main>
-      <SonnerDemo
-          isToastOpen={false}
-      />
+      
     </div>
   );
 }

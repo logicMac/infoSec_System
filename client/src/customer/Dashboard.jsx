@@ -1,41 +1,42 @@
 import { useState, useEffect } from "react";
+import { getAuthData } from "../utils/authGetter";
 import { useNavigate } from "react-router-dom";
 import CustomerNavbar from "./navbar";
+import { getCustomerStats } from "../api/analyticsApi";
+import { toast, Toaster } from "sonner";
 
 export default function CustomerDashboard() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const auth = getAuthData(); 
 
     useEffect(() => {
-        // Get user data from localStorage
-        const userData = sessionStorage.getItem("user");
-        if (userData) {
-            const parsedUser = JSON.parse(userData);
-            setUser(parsedUser);
-            
-            // Redirect if not a customer
-            if (parsedUser.role !== "customer") {
-                navigate("/Notfound404");
-            }
-        } else {
-            // No user data, redirect to login
-            navigate("/login");
+        if (!auth.token) {
+            navigate('/login')
+            return;
         }
-    }, [navigate]);
+
+        const getStats = async () => {
+            try {
+                const res = await getCustomerStats(auth.token);
+
+                if (res.ok) {
+                    toast.success("Fetched Stats Successfully");
+                }
+                
+            } catch (err) {
+                console.log(err);
+                toast.error("Failed to fetch Stats");
+            }
+        } 
+        getStats();
+    }, []);
 
     const handleLogout = () => {
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("user");
         navigate("/login");
     };
-
-    if (!user) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="text-xl">Loading...</div>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen bg-gray-50">
