@@ -34,13 +34,7 @@ export default function BrowseProducts () {
         <div className="">
             <CustomerNavbar/>
 
-            <div className="flex justify-start items-start p-10">
-                <div className="w-full h-60 shadow-xl rounded-xl">
-                    <img src="https://cdn.create.vista.com/api/media/medium/412591868/stock-photo-happy-man-shirt-holding-shopping-bags-blue?token=" className="object-fit w-full h-60" alt="" />
-                </div>
-            </div>
-
-            <div className="flex flex-row items-start justify-center text-sm text-center gap-5 tracking-wide">
+            <div className="flex flex-row items-start justify-center text-sm text-center gap-5 tracking-wide p-5">
                 <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Apparel</div>
                 <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Electronics</div>
                 <div className="p-2 bg-gray-200 text-black rounded-full w-30 hover:scale-110 transition duration-200">Fashion</div>

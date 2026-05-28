@@ -11,24 +11,34 @@ export default function CustomerNavbar ({user}) {
     };
     
     return(
-        <aside className="flex bg-gray-100 shadow-xl">
-            <div className="flex flex-row justify-between items-center w-full p-5 h-20 shadow-xl space-x-10 overflow-hidden">
-                <div>
-                    <h1 className="text-2xl font-semibold">ShopX</h1>           
+        <nav className="w-full bg-gray-100 shadow-md">
+            <div className="flex flex-row items-center w-full px-8 h-20 max-w-screen-2xl mx-auto">
+                
+                {/* Brand Logo - flex-1 so it takes equal space as logout side */}
+                <div className="flex items-center flex-1">
+                    <h1 className="text-2xl font-semibold text-gray-900">ShopX</h1>           
                 </div>
 
-                <div className="space-x-5">
-                    <Link to='/customer/Dashboard' className="hover:opacity-50">Home</Link>
-                    <Link to='/customer/browseProducts'>Browse</Link>
-                    <Link>Cart</Link>
-                    <Link>Orders</Link>
-                    <Link>Notifications</Link>
+                {/* Central Navigation Links - centered naturally */}
+                <div className="flex items-center space-x-6 text-gray-700 font-medium">
+                    <Link to='/customer/Dashboard' className="hover:text-black transition-colors">Home</Link>
+                    <Link to='/customer/browseProducts' className="hover:text-black transition-colors">Browse</Link>
+                    <Link to='/customer/cart' className="hover:text-black transition-colors">Cart</Link>
+                    <Link to='/customer/orders' className="hover:text-black transition-colors">Orders</Link>
+                    <Link to='/customer/notifications' className="hover:text-black transition-colors">Notifications</Link>
                 </div>
 
-                <div>
-                    <button onClick={handleLogout} className="p-2 bg-black text-white rounded-md w-30">Logout</button>
+                {/* Logout - flex-1 so it balances the logo side */}
+                <div className="flex items-center justify-end flex-1">
+                    <button 
+                        onClick={handleLogout} 
+                        className="px-6 py-2 bg-black text-white text-sm font-medium rounded-md hover:bg-gray-800 transition-all shadow-sm"
+                    >
+                        Logout
+                    </button>
                 </div>
+
             </div>  
-        </aside>
+        </nav>
     );
 }

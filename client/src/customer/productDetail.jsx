@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CustomerNavbar from "./navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { orderProducts } from "../api/orderApi";
 import { getAuthData } from "../utils/authGetter";
+import { toast } from "sonner";
 import COD from "../assets/COD.png";
 import Maya from "../assets/Maya.png";
 
@@ -13,22 +14,26 @@ export default function ProductDetail() {
   const token = auth?.token;
   const navigate = useNavigate();
 
-  //states 
-  const [toast, isToastOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [orderDetails, setOrderDetails] = useState({ 
     payment_method: 'COD', 
     size: 'M', 
     Vat: 12, 
-    Price: product.price
+    price: product?.price || 0
   });
 
-  //total price calculation 
-  const totalPrice = quantity * product.price + orderDetails.Vat;
+  const totalPrice = quantity * (product?.price || 0) + orderDetails.Vat;
   
-  //order product logic 
   const handleBuyProduct = async (e) => {
     e.preventDefault();
+    
+    console.log("Checkout clicked - Order details:", {
+      product_id: product.product_id,
+      quantity,
+      orderDetails,
+      token: token ? "exists" : "missing"
+    });
+    
     try {
       const res = await orderProducts(
         token,
@@ -37,12 +42,27 @@ export default function ProductDetail() {
         orderDetails
       );
       
+      console.log("Order response:", res);
+      
       if (res.ok) {
-         isToastOpen(true);
+        toast.success(res.msg || "Order Placed Successfully!", {
+          description: `${quantity}x ${product.product_name} - ₱${totalPrice}`,
+          action: {
+            label: "View Orders",
+            onClick: () => navigate("/customer/orders"),
+          },
+        });
+      } else {
+        toast.error("Failed to place order", {
+          description: res.msg || "Please try again later",
+        });
       }
 
     } catch (error) {
-      console.log("Error sending data to API");
+      console.error("Error sending data to API:", error);
+      toast.error("Something went wrong", {
+        description: "Please check your connection and try again",
+      });
     }
   };
 

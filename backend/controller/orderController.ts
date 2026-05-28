@@ -10,53 +10,75 @@ const orderController = {
         const {quantity, orderDetails} = req.body || {};
         const {price, payment_method, size, Vat} = orderDetails || {};
 
+        console.log("[OrderController] Received order request:", {
+            product_id,
+            userId,
+            quantity,
+            orderDetails
+        });
+
         if (!product_id) {
             return res.status(400).json({
                 success: false,
-                msg: "Failed to send product to backend"
+                msg: "Product ID is required"
             });
-        }
-
-        const [isProductExist]: any = await productModel.getProductById(product_id);
-
-        if (isProductExist.length === 0) {
-            return res.status(404).json({
-                success: false,
-                msg: "Product does not exist"
-            })
         }
 
         if (!userId) {
             return res.status(401).json({
                 success: false,
-                msg: "Unauthorized: user not found"
+                msg: "Unauthorized: Please login first"
             })
         }
-        
+
+        if (!quantity || !price || !payment_method) {
+            return res.status(400).json({
+                success: false,
+                msg: "Missing required order details (quantity, price, payment_method)"
+            });
+        }
+
         try {
-            const totalPrice = Number(quantity) * Number(price) + Number(Vat);
+            const [isProductExist]: any = await productModel.getProductById(product_id);
+
+            if (!isProductExist || isProductExist.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Product does not exist"
+                })
+            }
+
+            const totalPrice = Number(quantity) * Number(price) + Number(Vat || 0);
+            
+            console.log("[OrderController] Placing order with total:", totalPrice);
+            
             const order: any = await orderModel.orderProduct(
                 product_id,
                 userId,
                 String(quantity),
                 String(totalPrice),
                 payment_method,
-                size,
-                String(Vat)
+                size || 'M',
+                String(Vat || 0)
             );
+
+            console.log("[OrderController] Order placed successfully");
 
             res.status(200).json({
                 success: true,
                 msg: "Order Placed Successfully",
-                product: { order }
+                data: { 
+                    order_id: order.result.insertId,
+                    total_price: totalPrice
+                }
             });
 
-        } catch (err) {
-            console.error("orderProduct failed:", err);
+        } catch (err: any) {
+            console.error("[OrderController] Error:", err);
             res.status(500).json({
                 success: false,
-                msg: "Internal Server Error",
-                devError: err
+                msg: "Failed to place order",
+                error: err.message
             });
         }
     },

@@ -7,6 +7,11 @@ import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
       <App />
-      <Toaster toastOptions={{ style: { fontFamily: 'Poppins, sans-serif' } }} />
+      <Toaster 
+        position="top-right"
+        toastOptions={{ 
+          style: { fontFamily: 'Poppins, sans-serif' } 
+        }} 
+      />
   </BrowserRouter>,
 )

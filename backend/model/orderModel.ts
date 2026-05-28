@@ -11,17 +11,32 @@ const orderModel = {
         Vat: string) => {
             
         try {
+            console.log("[OrderModel] Creating order with:", {
+                product_id,
+                userId,
+                quantity,
+                totalPrice,
+                payment_method,
+                size,
+                Vat
+            });
             
+            // Insert into orders table - using customer_id to match analytics query
             const [result]: any = await db.query(`
-                INSERT INTO orders(product_id, user_Id, payment_Method) VALUES (?, ?, ?)`,
+                INSERT INTO orders(product_id, customer_id, payment_method) VALUES (?, ?, ?)`,
                 [product_id, userId, payment_method]
             );
 
             const order_id = result.insertId;
+            
+            console.log("[OrderModel] Order created with ID:", order_id);
 
+            // Insert into order_items table
             const [order_items] = await db.query(`
                 INSERT INTO order_items(order_id, product_id, quantity, total_price, size, Vat) VALUES (?, ?, ?, ?, ?, ?)
             `,[order_id, product_id, quantity, totalPrice, size, Vat]);
+            
+            console.log("[OrderModel] Order items created successfully");
 
             return {
                 result, 
@@ -29,7 +44,7 @@ const orderModel = {
             }
 
         } catch (error) {
-            console.error("Error creating product order:", error);
+            console.error("[OrderModel] Error creating product order:", error);
             throw error;
         }
     },
