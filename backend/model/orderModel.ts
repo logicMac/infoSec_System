@@ -23,7 +23,7 @@ const orderModel = {
             
             // Insert into orders table - using customer_id to match analytics query
             const [result]: any = await db.query(`
-                INSERT INTO orders(product_id, customer_id, payment_method) VALUES (?, ?, ?)`,
+                INSERT INTO orders(product_id, user_id, payment_method) VALUES (?, ?, ?)`,
                 [product_id, userId, payment_method]
             );
 

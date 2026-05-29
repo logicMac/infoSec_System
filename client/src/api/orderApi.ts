@@ -75,3 +75,29 @@ export async function deleteOrder(token: string, product_id: number) {
         console.log(error);
     }
 }
+
+//getCustomerOrder endpoint 
+export async function getCustomerOrders(customerId: number) {
+    try {
+         const res = await axios.post(`${import.meta.env.VITE_API_URL}/orders/orderProduct/${customerId}`);
+
+         const data = res.data
+
+         if (!data.ok) {
+            return {
+                ok: false,
+                msg: "Failed to fetch order data"
+            }
+         }
+
+         return {
+            ok: true,
+            data: data
+         }
+    } catch (error) {
+        return {
+            success: false,
+            msg: error instanceof Error
+        }
+    }
+}
