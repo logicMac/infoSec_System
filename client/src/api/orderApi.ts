@@ -1,9 +1,9 @@
+import { ok } from "assert";
 import axios from "axios";
 
 // Order product endpoint
 export async function orderProducts(token: string, product_id: number, quantity: number, orderDetails: any) {
     if (product_id == null || token == null) {
-        console.log("Api does not receive the data");
         return {
                 ok: false, 
                 msg: "Missing credentials or target data" 
@@ -35,8 +35,11 @@ export async function orderProducts(token: string, product_id: number, quantity:
         };
 
     } catch (error: any) {
-        console.log("orderProducts error response:", error?.response?.data || error);
-        return { ok: false, msg: "An unexpected error occurred.", error };
+        return { 
+            ok: false, 
+            msg: "An unexpected error occurred.", 
+            error 
+        };
     }
 }
 
@@ -72,18 +75,21 @@ export async function deleteOrder(token: string, product_id: number) {
         }
 
     } catch (error) {
-        console.log(error);
+        return {
+            ok: false,
+            msg: error instanceof Error || "Internal server Error"
+        }
     }
 }
 
-//getCustomerOrder endpoint 
+//Get Customer Order endpoint 
 export async function getCustomerOrders(customerId: number) {
     try {
-         const res = await axios.post(`${import.meta.env.VITE_API_URL}/orders/orderProduct/${customerId}`);
+         const res = await axios.get(`${import.meta.env.VITE_API_URL}/customers/getCustomerOrders/${customerId}`);
 
-         const data = res.data
+         const data = res.data;
 
-         if (!data.ok) {
+         if (!data.success) {
             return {
                 ok: false,
                 msg: "Failed to fetch order data"
@@ -96,8 +102,8 @@ export async function getCustomerOrders(customerId: number) {
          }
     } catch (error) {
         return {
-            success: false,
-            msg: error instanceof Error
+            ok: false,
+            msg: error instanceof Error || "Internal Server Error"
         }
     }
 }
