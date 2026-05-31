@@ -22,11 +22,23 @@ export interface UserOrders extends RowDataPacket {
     [key: string]: any;
 }
 
+export interface AddToCart {
+    success: boolean;
+    msg: string;
+}
+
 export interface DeleteResponse {
     ok: boolean;
     msg: string;
+    result: any;
 }
 
 export interface FetchUserOrder extends RowDataPacket {
     [key: string]: any;
+}
+
+export interface UpdateOrderStatus {
+    ok: boolean;
+    msg: string;
+    result: any;
 }

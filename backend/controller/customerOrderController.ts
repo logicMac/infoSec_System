@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../index";
-import { getUserOrders, cancelOrder } from "../model/customerOrderModel";
+import { getUserOrders, cancelOrder, fetchUserOrder, addToCart } from "../model/customerOrderModel";
 
 export class customerOrderController {
     //get customer orders
@@ -30,6 +30,34 @@ export class customerOrderController {
         } 
     }
 
+    //add to cart
+    public addToCart = async(req: AuthRequest, res:Response): Promise<Response | void> => {
+        const productId = Number(req.params.id);
+        const customerId = Number(req.user?.id);
+
+        try {
+            const result = await addToCart(productId, customerId);
+
+            if (result.success) {
+                return res.status(400).json({
+                    success: false,
+                    msg: "Cannot add to cart product"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                msg: result.msg,
+                data: result
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                msg: error instanceof Error ? error.message: "Internal Server Error"
+            });
+        }
+    }
+
     //cancel order
     public cancelOrder = async(req: AuthRequest, res:Response): Promise<Response | void> => {
         const {reason, orderId, productId} = req.body || {};
@@ -43,6 +71,22 @@ export class customerOrderController {
         }
 
         try {
+            const [order] = await fetchUserOrder(orderId);
+
+            if (!order) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Order not found"
+                });
+            }
+
+            if (order.order_status === 'Shipped') {
+                return res.status(400).json({
+                    success: false,
+                    msg: "Cannot cancel order that is already shipped"
+                })
+            }
+
             const result = await cancelOrder(reason, orderId, customerId, productId);
 
             return res.status(200).json({
@@ -55,6 +99,20 @@ export class customerOrderController {
             return res.status(500).json({
                 success: false,
                 msg: error instanceof Error ? error.message: "Internal Server Error"
+            });
+        }
+    }
+    
+    //update customer order status
+    public updateCustomerOrderStatus = async(req: AuthRequest, res: Response): Promise<Response | void> => {
+        const {order_status, orderId, customerId} = req.body || {};
+        
+        try {
+            const 
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                msg: error instanceof Error ? error.message || "Internal Server Error"
             });
         }
     }

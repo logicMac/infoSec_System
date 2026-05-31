@@ -1,4 +1,3 @@
-import { ok } from "assert";
 import axios from "axios";
 
 // Order product endpoint
@@ -43,7 +42,7 @@ export async function orderProducts(token: string, product_id: number, quantity:
     }
 }
 
-export async function deleteOrder(token: string, product_id: number) {
+export async function cancelOrder(token: string, product_id: number) {
     if (token === null || product_id === null) {
         return {
             ok: false, 
@@ -52,10 +51,10 @@ export async function deleteOrder(token: string, product_id: number) {
     }
 
     try {
-        const res = axios.delete(`${import.meta.env.VITE_API_URL}/orders/cancelOrder/${product_id}`,
+        const res = await axios.delete(`${import.meta.env.VITE_API_URL}/orders/cancelOrder/${product_id}`,
             {
                 headers: {
-                    Authorization: `Bearer + ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             }
         );
