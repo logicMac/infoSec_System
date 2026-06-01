@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../index";
-import { getUserOrders, cancelOrder, fetchUserOrder, addToCart } from "../model/customerOrderModel";
+import { getUserOrders, cancelOrder, fetchUserOrder, addToCart, updateOrderStatus } from "../model/customerOrderModel";
 
 export class customerOrderController {
     //get customer orders
@@ -91,7 +91,7 @@ export class customerOrderController {
 
             return res.status(200).json({
                 success: true,
-                msg: "Order cancellation succesfull",
+                msg: result.msg,
                 data: result
             })  
 
@@ -108,11 +108,25 @@ export class customerOrderController {
         const {order_status, orderId, customerId} = req.body || {};
         
         try {
-            const 
+            const result = await updateOrderStatus(order_status, orderId);
+
+            if (!result.ok) {
+                return res.status(400).json({
+                    success: false,
+                    msg: "Failed to update order status" 
+                })
+            }
+
+            return res.status(200).json({
+                success: true,
+                msg: result.msg,
+                data: result    
+            });
+
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                msg: error instanceof Error ? error.message || "Internal Server Error"
+                msg: error instanceof Error ? error.message: "Internal Server Error"
             });
         }
     }

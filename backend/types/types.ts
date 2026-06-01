@@ -38,7 +38,6 @@ export interface FetchUserOrder extends RowDataPacket {
 }
 
 export interface UpdateOrderStatus {
-    ok: boolean;
+    success: boolean;
     msg: string;
-    result: any;
 }

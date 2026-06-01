@@ -2,6 +2,7 @@ import db from "../db";
 import { ResultSetHeader } from "mysql2";
 import { UserOrders, DeleteResponse, FetchUserOrder, AddToCart, UpdateOrderStatus } from "../types/types";
 
+//get all user orders
 export async function getUserOrders(customer_id: number): Promise<UserOrders[]> {
     try {
         const query = `
@@ -18,6 +19,7 @@ export async function getUserOrders(customer_id: number): Promise<UserOrders[]> 
     }
 }
 
+//add to cart product 
 export async function addToCart(productId: number, userId: number): Promise<AddToCart> {
     try {
         const query = `                                        
@@ -42,6 +44,7 @@ export async function addToCart(productId: number, userId: number): Promise<AddT
     }
 }
 
+//cancel order
 export async function cancelOrder(reason: string, orderId: number, customerId: number, productId: number): Promise<DeleteResponse> {
     try {    
         const query = `
@@ -55,7 +58,8 @@ export async function cancelOrder(reason: string, orderId: number, customerId: n
         if (result.affectedRows === 0) {
             return {
                 ok: false,
-                msg: "Order not found" 
+                msg: "Order not found",
+                result: result.affectedRows 
             }
         }
 
@@ -69,6 +73,7 @@ export async function cancelOrder(reason: string, orderId: number, customerId: n
     }
 }
 
+//fetch specific user order
 export async function fetchUserOrder(orderId: number): Promise<FetchUserOrder[]> {
     try {
         const query = `
@@ -84,6 +89,7 @@ export async function fetchUserOrder(orderId: number): Promise<FetchUserOrder[]>
     }
 }
 
+//update order status
 export async function updateOrderStatus(order_status: string, orderId: number, customerId: number): Promise<UpdateOrderStatus> {
     try {
         const query = `
@@ -92,19 +98,26 @@ export async function updateOrderStatus(order_status: string, orderId: number, c
             WHERE orderId = ?
         `
 
+        const query2 = `
+            UPDATE order_items 
+            SET item_status = ?
+            WHERE orderId = ?
+        `
+
         const [result] = await db.query<ResultSetHeader>(query, [order_status, orderId]);
 
-        if (result.affectedRows === 0) {
+        const [result2] = await db.query<ResultSetHeader>(query2, [order_status, orderId]);
+
+        if (result.affectedRows === 0 || result2.affectedRows === 0) {
             return {
                 ok: false,
-                msg: "Order not found" 
+                msg: "Order not found"
             }
         }
 
         return {
             ok: true,
-            msg: "Order status updated successfully",
-            res
+            msg: "Order status updated successfully"
         }
     } catch (err) {
         throw err;
